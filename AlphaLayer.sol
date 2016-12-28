@@ -5,18 +5,15 @@ contract Dapp{address public owner;}
 
 contract AlphaLayer{
 
-//standard for all Alpha Layer enabled contracts
-//if your contract contains this variable, so the owner can control the related informations on the Alpha Layer
+//standard for all Alpha Layer enabled Dapps
+//if your contract contains this variable, the owner can control the related informations on the Alpha Layer
 address public owner;
 
-//an external interface we can change in the future, that is allowed to create new sub-layers
+//an external interface we can substitute in the future, allowed to create new sub-layers
 address public controller;
 
 //A basic counter to track all records (necessary?)
 uint public records;
-
-//used to eventually lock out Alpha Layer owner
-bool closed;
 
 //used to point to external dapps/contracts (in order to find dapp owner, and to check if you have the permission to write on that location in behalf of the dapp)
 Dapp dapp;
@@ -60,7 +57,6 @@ function AlphaLayer(address a){
 owner=msg.sender;
 records=0;
 controller=a;
-closed=false;
 
 //not strictly necessary
 init();
@@ -110,13 +106,6 @@ return true;
 }
 
 function setController(address c)returns(bool){
-if(msg.sender!=owner)throw;
-logs.push(log(owner,"setController",c,1));
-controller=c;
-return true;
-}
-
-function close(address c)returns(bool){
 if(msg.sender!=owner)throw;
 logs.push(log(owner,"setController",c,1));
 controller=c;
