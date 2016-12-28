@@ -15,3 +15,4 @@ https://www.reddit.com/r/ethereum/comments/5kq4uw/the_war_of_dapps_has_begun/
 Basic temporary interface:
 http://etherscape.io/alphalayer.html
 
+Beta Layer (graph theory?) and Omega Layer (opposite functions of Alpha Layer that is individual, Omega Layer is collective) are coming soon. Stay tuned.
