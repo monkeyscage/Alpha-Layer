@@ -53,6 +53,11 @@ mapping(address => mapping(address => uint[]))public permissionsTarget;
 //a simple "oracle" where you can check if a guy gave permission to a dapp for a specific layer
 mapping(address => mapping(address => mapping(uint => bool)))public allowed;
 
+mapping(uint => bool)public infotaken;
+mapping(uint => bool)public addresstaken;
+mapping(uint => bool)public booltaken;
+mapping(uint => bool)public uinttaken;
+
 function AlphaLayer(address a){
 owner=msg.sender;
 records=0;
@@ -66,10 +71,10 @@ init();
 
 function setLabel(uint labeltype,uint labelindex,uint listitem,string label,address creator)returns(bool){
 if((msg.sender!=owner)&&(msg.sender!=controller))throw;
-if(labeltype==100){infoLabels[labelindex]=label;infoLayerCreator[labelindex]=creator;}
-if(labeltype==101){quantityLabels[labelindex]=label;quantityLayerCreator[labelindex]=creator;}
-if(labeltype==102){boolLabels[labelindex]=label;boolLayerCreator[labelindex]=creator;}
-if(labeltype==103){addressLabels[labelindex]=label;addressLayerCreator[labelindex]=creator;}
+if(labeltype==100)if(!infotaken[labelindex]){infoLabels[labelindex]=label;infoLayerCreator[labelindex]=creator;infotaken[labelindex]=true;}
+if(labeltype==101)if(!quantitytaken[labelindex]){quantityLabels[labelindex]=label;quantityLayerCreator[labelindex]=creator;quantitytaken[labelindex]=true;}
+if(labeltype==102)if(!booltaken[labelindex]){boolLabels[labelindex]=label;boolLayerCreator[labelindex]=creator;booltaken[labelindex]=true;}
+if(labeltype==103)if(!addresstaken[labelindex]){addressLabels[labelindex]=label;addressLayerCreator[labelindex]=creator;addresstaken[labelindex]=true;}
 logs.push(log(msg.sender,label,0x0,labeltype));
 return true;
 }
