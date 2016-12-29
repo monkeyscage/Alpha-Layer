@@ -92,23 +92,23 @@ return true;
 
 function init(){
 //the very basic layers needed so far
-setLabel(100,1,0,"name");
-setLabel(100,2,0,"address");
-setLabel(100,3,0,"email");
-setLabel(100,4,0,"disclaimer");
-setLabel(100,5,0,"logo512*512");
-setLabel(100,6,0,"logo256*256");
-setLabel(100,7,0,"logo128*128");
-setLabel(100,8,0,"logo64*64");
-setLabel(100,9,0,"logo32*32");
-setLabel(100,10,0,"logo16*16");
-setLabel(100,11,0,"owner");
-setLabel(100,12,0,"Github");
-setLabel(100,13,0,"Twitter Account");
-setLabel(100,14,0,"Twitter Widget");
-setLabel(100,15,0,"Twitter Widget@");
-setLabel(100,16,0,"Facebook");
-setLabel(100,17,0,"Google");
+setLabel(100,1,0,"name",this,true);
+setLabel(100,2,0,"address",this,true);
+setLabel(100,3,0,"email",this,true);
+setLabel(100,4,0,"disclaimer",this,true);
+setLabel(100,5,0,"logo512*512",this,true);
+setLabel(100,6,0,"logo256*256",this,true);
+setLabel(100,7,0,"logo128*128",this,true);
+setLabel(100,8,0,"logo64*64",this,true);
+setLabel(100,9,0,"logo32*32",this,true);
+setLabel(100,10,0,"logo16*16",this,true);
+setLabel(100,11,0,"owner",this,true);
+setLabel(100,12,0,"Github",this,true);
+setLabel(100,13,0,"Twitter Account",this,true);
+setLabel(100,14,0,"Twitter Widget",this,true);
+setLabel(100,15,0,"Twitter Widget@",this,true);
+setLabel(100,16,0,"Facebook",this,true);
+setLabel(100,17,0,"Google",this,true);
 }
 
 function setOwner(address o)returns(bool){
@@ -164,7 +164,7 @@ return true;
 //READ FUNCTIONS
 
 
-function exposed(uint t,uint u)constant returns(bool,uint){
+function exposed(uint t,uint u)constant returns(uint,uint){
 uint uu;uint ll;
 if(t==1){uu=stringexposed[u];ll=stringexposed.length;}
 if(t==2){uu=addressexposed[u];ll=addressexposed.length;}
