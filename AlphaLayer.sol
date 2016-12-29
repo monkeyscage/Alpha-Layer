@@ -21,21 +21,21 @@ Dapp dapp;
 //the container for labels
 //the labels for "the container for labels"
 //the creator of that layer
-mapping(address => mapping(uint => string))public socialInfo;
-mapping(uint => string)public infoLabels;
-mapping(uint => address)public infoLayerCreator;
+mapping(address => mapping(uint => string))public socialString;
+mapping(uint => string)public stringLabels;
+mapping(uint => address)public stringLayerCreator;
 
 //the container for numbers
 //the labels for "the container for numbers"
 //the creator of that layer
-mapping(address => mapping(uint => uint))public socialQuantity; 
-mapping(uint => string)public quantityLabels;
-mapping(uint => address)public quantityLayerCreator;
+mapping(address => mapping(uint => uint))public socialUint; 
+mapping(uint => string)public uintLabels;
+mapping(uint => address)public uintLayerCreator;
 
 //the container for true/false
 //the labels for "the container for true/false"
 //the creator of that layer
-mapping(address => mapping(uint => bool))public socialCheck;
+mapping(address => mapping(uint => bool))public socialBool;
 mapping(uint => string)public boolLabels;
 mapping(uint => address)public boolLayerCreator;
 
@@ -54,13 +54,13 @@ mapping(address => mapping(address => uint[]))public permissionsTarget;
 mapping(address => mapping(address => mapping(uint => bool)))public allowed;
 
 //once a layer is created it is also locked, no one can take it or overwrite its label
-mapping(uint => bool)public infotaken;
+mapping(uint => bool)public stringtaken;
 mapping(uint => bool)public addresstaken;
 mapping(uint => bool)public booltaken;
 mapping(uint => bool)public uinttaken;
 
 //some layers are exposed and indexed, the others are "inner functional layers" used by dapps for internal procedures
-uint[] infoexposed;
+uint[] stringexposed;
 uint[] addressexposed;
 uint[] boolexposed;
 uint[] uintexposed;
@@ -79,8 +79,8 @@ init();
 
 function setLabel(uint labeltype,uint labelindex,uint listitem,string label,address creator,bool exposed)returns(bool){
 if((msg.sender!=owner)&&(msg.sender!=controller))throw;
-if(labeltype==100)if(!infotaken[labelindex]){infoLabels[labelindex]=label;infoLayerCreator[labelindex]=creator;infotaken[labelindex]=true;if(exposed)infoexposed.push(labelindex);}
-if(labeltype==101)if(!quantitytaken[labelindex]){quantityLabels[labelindex]=label;quantityLayerCreator[labelindex]=creator;quantitytaken[labelindex]=true;if(exposed)uintexposed.push(labelindex);}
+if(labeltype==100)if(!stringtaken[labelindex]){stringLabels[labelindex]=label;stringLayerCreator[labelindex]=creator;stringtaken[labelindex]=true;if(exposed)stringexposed.push(labelindex);}
+if(labeltype==101)if(!uinttaken[labelindex]){uintLabels[labelindex]=label;uintLayerCreator[labelindex]=creator;uinttaken[labelindex]=true;if(exposed)uintexposed.push(labelindex);}
 if(labeltype==102)if(!booltaken[labelindex]){boolLabels[labelindex]=label;boolLayerCreator[labelindex]=creator;booltaken[labelindex]=true;if(exposed)boolexposed.push(labelindex);}
 if(labeltype==103)if(!addresstaken[labelindex]){addressLabels[labelindex]=label;addressLayerCreator[labelindex]=creator;addresstaken[labelindex]=true;if(exposed)addressexposed.push(labelindex);}
 logs.push(log(msg.sender,label,0x0,labeltype));
@@ -128,26 +128,26 @@ return true;
 
 //WRITE FUNCTIONS
 
-function addInfo(address d,address addr,uint index,string info) returns(bool){
+function addString(address d,address addr,uint index,string info) returns(bool){
 dapp=Dapp(d);
 if((msg.sender!=addr)&&(msg.sender!=dapp.owner())&&(msg.sender!=controller)&&(!allowed[addr][msg.sender][index]))throw;
-socialInfo[addr][index]=info;
+socialString[addr][index]=info;
 records++;
 return true;
 }
 
-function addQuantity(address d,address addr,uint index,uint quant) returns(bool){
+function addUint(address d,address addr,uint index,uint quant) returns(bool){
 dapp=Dapp(d);
 if((msg.sender!=addr)&&(msg.sender!=dapp.owner())&&(msg.sender!=controller)&&(!allowed[addr][msg.sender][index]))throw;
-socialQuantity[addr][index]=quant;
+socialUint[addr][index]=quant;
 records++;
 return true;
 }
 
-function addCheck(address d,address addr,uint index,bool check) returns(bool){
+function addBool(address d,address addr,uint index,bool check) returns(bool){
 dapp=Dapp(d);
 if((msg.sender!=addr)&&(msg.sender!=dapp.owner())&&(msg.sender!=controller)&&(!allowed[addr][msg.sender][index]))throw;
-socialCheck[addr][index]=check;
+socialBool[addr][index]=check;
 records++;
 return true;
 }
@@ -166,23 +166,23 @@ return true;
 
 function exposed(uint t,uint u)constant returns(bool,uint){
 uint uu;uint ll;
-if(t==1){uu=infoexposed[u];ll=infoexposed.length;}
+if(t==1){uu=stringexposed[u];ll=stringexposed.length;}
 if(t==2){uu=addressexposed[u];ll=addressexposed.length;}
 if(t==3){uu=boolexposed[u];ll=boolexposed.length;}
 if(t==4){uu=uintexposed[u];ll=uintexposed.length;}
 return(uu,ll);
 }
 
-function readInfo(address addr,uint index)constant returns (string,string,address){
-return (socialInfo[addr][index],infoLabels[index],infoLayerCreator[index]);
+function readString(address addr,uint index)constant returns (string,string,address){
+return (socialString[addr][index],stringLabels[index],stringLayerCreator[index]);
 }
 
-function readQuantity(address addr,uint index)constant returns (uint,string,address){
-return (socialQuantity[addr][index],quantityLabels[index],quantityLayerCreator[index]);
+function readUint(address addr,uint index)constant returns (uint,string,address){
+return (socialUint[addr][index],uintLabels[index],uintLayerCreator[index]);
 }
 
-function readCheck(address addr,uint index)constant returns (bool,string,address){
-return (socialCheck[addr][index],boolLabels[index],boolLayerCreator[index]);
+function readBool(address addr,uint index)constant returns (bool,string,address){
+return (socialBool[addr][index],boolLabels[index],boolLayerCreator[index]);
 }
 
 function readAddress(address addr,uint index)constant returns (address,string,address){
