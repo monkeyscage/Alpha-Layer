@@ -53,24 +53,18 @@ mapping(address => mapping(address => uint[]))public permissionsTarget;
 //a simple "oracle" where you can check if a guy gave permission to a dapp for a specific layer
 mapping(address => mapping(address => mapping(uint => bool)))public allowed;
 
+//once a layer is created it is also locked, no one can take it or overwrite its label
 mapping(uint => bool)public infotaken;
 mapping(uint => bool)public addresstaken;
 mapping(uint => bool)public booltaken;
 mapping(uint => bool)public uinttaken;
 
+//some layers are exposed and indexed, the others are "inner functional layers" used by dapps for internal procedures
 uint[] infoexposed;
 uint[] addressexposed;
 uint[] boolexposed;
 uint[] uintexposed;
 
-function exposed(uint t,uint u)constant returns(bool,uint){
-uint uu;uint ll;
-if(t==1){uu=infoexposed[u];ll=infoexposed.length;}
-if(t==2){uu=addressexposed[u];ll=addressexposed.length;}
-if(t==3){uu=boolexposed[u];ll=boolexposed.length;}
-if(t==4){uu=uintexposed[u];ll=uintexposed.length;}
-return(uu,ll);
-}
 
 function AlphaLayer(address a){
 owner=msg.sender;
@@ -168,6 +162,16 @@ return true;
 
 
 //READ FUNCTIONS
+
+
+function exposed(uint t,uint u)constant returns(bool,uint){
+uint uu;uint ll;
+if(t==1){uu=infoexposed[u];ll=infoexposed.length;}
+if(t==2){uu=addressexposed[u];ll=addressexposed.length;}
+if(t==3){uu=boolexposed[u];ll=boolexposed.length;}
+if(t==4){uu=uintexposed[u];ll=uintexposed.length;}
+return(uu,ll);
+}
 
 function readInfo(address addr,uint index)constant returns (string,string,address){
 return (socialInfo[addr][index],infoLabels[index],infoLayerCreator[index]);
