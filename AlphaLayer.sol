@@ -21,43 +21,43 @@ Dapp dapp;
 //the container for labels
 //the labels for "the container for labels"
 //the creator of that layer
-mapping(address => mapping(uint => string))public socialString;
-mapping(uint => string)public stringLabels;
-mapping(uint => address)public stringLayerCreator;
+mapping(address => mapping(uint => string))socialString;
+mapping(uint => string)stringLabels;
+mapping(uint => address)stringLayerCreator;
 
 //the container for numbers
 //the labels for "the container for numbers"
 //the creator of that layer
-mapping(address => mapping(uint => uint))public socialUint; 
-mapping(uint => string)public uintLabels;
-mapping(uint => address)public uintLayerCreator;
+mapping(address => mapping(uint => uint))socialUint; 
+mapping(uint => string)uintLabels;
+mapping(uint => address)uintLayerCreator;
 
 //the container for true/false
 //the labels for "the container for true/false"
 //the creator of that layer
-mapping(address => mapping(uint => bool))public socialBool;
-mapping(uint => string)public boolLabels;
-mapping(uint => address)public boolLayerCreator;
+mapping(address => mapping(uint => bool))socialBool;
+mapping(uint => string)boolLabels;
+mapping(uint => address)boolLayerCreator;
 
 //the container for addresses
 //the labels for "the container for addresses"
 //the creator of that layer
-mapping(address => mapping(uint => address))public socialAddress;
-mapping(uint => string)public addressLabels;
-mapping(uint => address)public addressLayerCreator;
+mapping(address => mapping(uint => address))socialAddress;
+mapping(uint => string)addressLabels;
+mapping(uint => address)addressLayerCreator;
 
 //personal container for permissioned dapps
-mapping(address => address[])public permissions;
+mapping(address => address[])permissions;
 //the list of layers a given dapp has the permission to write in behalf of an address
-mapping(address => mapping(address => uint[]))public permissionsTarget;
+mapping(address => mapping(address => uint[]))permissionsTarget;
 //a simple "oracle" where you can check if a guy gave permission to a dapp for a specific layer
-mapping(address => mapping(address => mapping(uint => bool)))public allowed;
+mapping(address => mapping(address => mapping(uint => bool)))allowed;
 
 //once a layer is created it is also locked, no one can take it or overwrite its label
-mapping(uint => bool)public stringtaken;
-mapping(uint => bool)public addresstaken;
-mapping(uint => bool)public booltaken;
-mapping(uint => bool)public uinttaken;
+mapping(uint => bool)stringtaken;
+mapping(uint => bool)addresstaken;
+mapping(uint => bool)booltaken;
+mapping(uint => bool)uinttaken;
 
 //some layers are exposed and indexed, the others are "inner functional layers" used by dapps for internal procedures
 uint[] stringexposed;
@@ -72,7 +72,7 @@ records=0;
 controller=a;
 
 //not strictly necessary
-init();
+//init();
 }
 
 //creation of new layers
@@ -187,6 +187,11 @@ return (socialBool[addr][index],boolLabels[index],boolLayerCreator[index]);
 
 function readAddress(address addr,uint index)constant returns (address,string,address){
 return (socialAddress[addr][index],addressLabels[index],addressLayerCreator[index]);
+}
+
+function readString(address addr,uint t,uint index)constant returns (string,string,address){
+if()
+return (socialString[addr][index],stringLabels[index],stringLayerCreator[index]);
 }
 
 
