@@ -58,6 +58,20 @@ mapping(uint => bool)public addresstaken;
 mapping(uint => bool)public booltaken;
 mapping(uint => bool)public uinttaken;
 
+uint[] infoexposed;
+uint[] addressexposed;
+uint[] boolexposed;
+uint[] uintexposed;
+
+function exposed(uint t,uint u)constant returns(bool,uint){
+uint uu;uint ll;
+if(t==1){uu=infoexposed[u];ll=infoexposed.length;}
+if(t==2){uu=addressexposed[u];ll=addressexposed.length;}
+if(t==3){uu=boolexposed[u];ll=boolexposed.length;}
+if(t==4){uu=uintexposed[u];ll=uintexposed.length;}
+return(uu,ll);
+}
+
 function AlphaLayer(address a){
 owner=msg.sender;
 records=0;
@@ -69,12 +83,12 @@ init();
 
 //creation of new layers
 
-function setLabel(uint labeltype,uint labelindex,uint listitem,string label,address creator)returns(bool){
+function setLabel(uint labeltype,uint labelindex,uint listitem,string label,address creator,bool exposed)returns(bool){
 if((msg.sender!=owner)&&(msg.sender!=controller))throw;
-if(labeltype==100)if(!infotaken[labelindex]){infoLabels[labelindex]=label;infoLayerCreator[labelindex]=creator;infotaken[labelindex]=true;}
-if(labeltype==101)if(!quantitytaken[labelindex]){quantityLabels[labelindex]=label;quantityLayerCreator[labelindex]=creator;quantitytaken[labelindex]=true;}
-if(labeltype==102)if(!booltaken[labelindex]){boolLabels[labelindex]=label;boolLayerCreator[labelindex]=creator;booltaken[labelindex]=true;}
-if(labeltype==103)if(!addresstaken[labelindex]){addressLabels[labelindex]=label;addressLayerCreator[labelindex]=creator;addresstaken[labelindex]=true;}
+if(labeltype==100)if(!infotaken[labelindex]){infoLabels[labelindex]=label;infoLayerCreator[labelindex]=creator;infotaken[labelindex]=true;if(exposed)infoexposed.push(labelindex);}
+if(labeltype==101)if(!quantitytaken[labelindex]){quantityLabels[labelindex]=label;quantityLayerCreator[labelindex]=creator;quantitytaken[labelindex]=true;if(exposed)uintexposed.push(labelindex);}
+if(labeltype==102)if(!booltaken[labelindex]){boolLabels[labelindex]=label;boolLayerCreator[labelindex]=creator;booltaken[labelindex]=true;if(exposed)boolexposed.push(labelindex);}
+if(labeltype==103)if(!addresstaken[labelindex]){addressLabels[labelindex]=label;addressLayerCreator[labelindex]=creator;addresstaken[labelindex]=true;if(exposed)addressexposed.push(labelindex);}
 logs.push(log(msg.sender,label,0x0,labeltype));
 return true;
 }
