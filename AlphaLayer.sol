@@ -131,12 +131,14 @@ return true;
 function addString(address d,address addr,uint index,string info) returns(bool){
 dapp=Dapp(d);
 if((msg.sender!=addr)&&(msg.sender!=dapp.owner())&&(msg.sender!=controller)&&(!allowed[addr][msg.sender][index]))throw;
+if(!stringtaken[index])throw;
 socialString[addr][index]=info;
 records++;
 return true;
 }
 
 function addUint(address d,address addr,uint index,uint quant) returns(bool){
+if(!uinttaken[index])throw;
 dapp=Dapp(d);
 if((msg.sender!=addr)&&(msg.sender!=dapp.owner())&&(msg.sender!=controller)&&(!allowed[addr][msg.sender][index]))throw;
 socialUint[addr][index]=quant;
@@ -145,6 +147,7 @@ return true;
 }
 
 function addBool(address d,address addr,uint index,bool check) returns(bool){
+if(!booltaken[index])throw;
 dapp=Dapp(d);
 if((msg.sender!=addr)&&(msg.sender!=dapp.owner())&&(msg.sender!=controller)&&(!allowed[addr][msg.sender][index]))throw;
 socialBool[addr][index]=check;
@@ -153,6 +156,7 @@ return true;
 }
 
 function addAddress(address d,address addr,uint index,address addr2) returns(bool){
+if(!addresstaken[index])throw;
 dapp=Dapp(d);
 if((msg.sender!=addr)&&(msg.sender!=dapp.owner())&&(msg.sender!=controller)&&(!allowed[addr][msg.sender][index]))throw;
 socialAddress[addr][index]=addr2;
