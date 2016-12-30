@@ -1,4 +1,4 @@
-pragma solidity ^0.4.2;
+pragma solidity ^0.4.6;
 
 
 contract Dapp{address public owner;}
@@ -66,10 +66,10 @@ uint[] boolexposed;
 uint[] uintexposed;
 
 
-function AlphaLayer(address a){
+function AlphaLayer(address control){
 owner=msg.sender;
 records=0;
-controller=a;
+controller=control;
 
 //not strictly necessary
 //init();
@@ -77,7 +77,7 @@ controller=a;
 
 //creation of new layers
 
-function setLabel(uint labeltype,uint labelindex,uint listitem,string label,address creator,bool exposed)returns(bool){
+function setLabel(uint labeltype,uint labelindex,string label,address creator,bool exposed)returns(bool){
 if((msg.sender!=owner)&&(msg.sender!=controller))throw;
 if(labeltype==100)if(!stringtaken[labelindex]){stringLabels[labelindex]=label;stringLayerCreator[labelindex]=creator;stringtaken[labelindex]=true;if(exposed)stringexposed.push(labelindex);}
 if(labeltype==101)if(!uinttaken[labelindex]){uintLabels[labelindex]=label;uintLayerCreator[labelindex]=creator;uinttaken[labelindex]=true;if(exposed)uintexposed.push(labelindex);}
@@ -92,23 +92,23 @@ return true;
 
 function init(){
 //the very basic layers needed so far
-setLabel(100,1,0,"name",this,true);
-setLabel(100,2,0,"address",this,true);
-setLabel(100,3,0,"email",this,true);
-setLabel(100,4,0,"disclaimer",this,true);
-setLabel(100,5,0,"logo512*512",this,true);
-setLabel(100,6,0,"logo256*256",this,true);
-setLabel(100,7,0,"logo128*128",this,true);
-setLabel(100,8,0,"logo64*64",this,true);
-setLabel(100,9,0,"logo32*32",this,true);
-setLabel(100,10,0,"logo16*16",this,true);
-setLabel(100,11,0,"owner",this,true);
-setLabel(100,12,0,"Github",this,true);
-setLabel(100,13,0,"Twitter Account",this,true);
-setLabel(100,14,0,"Twitter Widget",this,true);
-setLabel(100,15,0,"Twitter Widget@",this,true);
-setLabel(100,16,0,"Facebook",this,true);
-setLabel(100,17,0,"Google",this,true);
+setLabel(100,1,"name",this,true);
+setLabel(100,2,"address",this,true);
+setLabel(100,3,"email",this,true);
+setLabel(100,4,"disclaimer",this,true);
+setLabel(100,5,"logo512*512",this,true);
+setLabel(100,6,"logo256*256",this,true);
+setLabel(100,7,"logo128*128",this,true);
+setLabel(100,8,"logo64*64",this,true);
+setLabel(100,9,"logo32*32",this,true);
+setLabel(100,10,"logo16*16",this,true);
+setLabel(100,11,"owner",this,true);
+setLabel(100,12,"Github",this,true);
+setLabel(100,13,"Twitter Account",this,true);
+setLabel(100,14,"Twitter Widget",this,true);
+setLabel(100,15,"Twitter Widget@",this,true);
+setLabel(100,16,"Facebook",this,true);
+setLabel(100,17,"Google",this,true);
 }
 
 function setOwner(address o)returns(bool){
@@ -131,14 +131,12 @@ return true;
 function addString(address d,address addr,uint index,string info) returns(bool){
 dapp=Dapp(d);
 if((msg.sender!=addr)&&(msg.sender!=dapp.owner())&&(msg.sender!=controller)&&(!allowed[addr][msg.sender][index]))throw;
-if(!stringtaken[index])throw;
 socialString[addr][index]=info;
 records++;
 return true;
 }
 
 function addUint(address d,address addr,uint index,uint quant) returns(bool){
-if(!uinttaken[index])throw;
 dapp=Dapp(d);
 if((msg.sender!=addr)&&(msg.sender!=dapp.owner())&&(msg.sender!=controller)&&(!allowed[addr][msg.sender][index]))throw;
 socialUint[addr][index]=quant;
@@ -147,7 +145,6 @@ return true;
 }
 
 function addBool(address d,address addr,uint index,bool check) returns(bool){
-if(!booltaken[index])throw;
 dapp=Dapp(d);
 if((msg.sender!=addr)&&(msg.sender!=dapp.owner())&&(msg.sender!=controller)&&(!allowed[addr][msg.sender][index]))throw;
 socialBool[addr][index]=check;
@@ -156,7 +153,6 @@ return true;
 }
 
 function addAddress(address d,address addr,uint index,address addr2) returns(bool){
-if(!addresstaken[index])throw;
 dapp=Dapp(d);
 if((msg.sender!=addr)&&(msg.sender!=dapp.owner())&&(msg.sender!=controller)&&(!allowed[addr][msg.sender][index]))throw;
 socialAddress[addr][index]=addr2;
@@ -194,7 +190,6 @@ return (socialAddress[addr][index],addressLabels[index],addressLayerCreator[inde
 }
 
 function readString(address addr,uint t,uint index)constant returns (string,string,address){
-if()
 return (socialString[addr][index],stringLabels[index],stringLayerCreator[index]);
 }
 
