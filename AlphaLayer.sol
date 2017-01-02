@@ -1,10 +1,10 @@
 pragma solidity ^0.4.6;
 
-
+contract LayerPlaceholder{function createLayerPlaceholder(address c)returns(address){}}
 contract Dapp{address public owner;}
 
 contract AlphaLayer{
-
+PlaceHolder placeholder;
 //standard for all Alpha Layer enabled Dapps
 //if your contract contains this variable, the owner can control the related informations on the Alpha Layer
 address public owner;
@@ -17,6 +17,8 @@ uint public records;
 
 //used to point to external dapps/contracts (in order to find dapp owner, and to check if you have the permission to write on that location in behalf of the dapp)
 Dapp dapp;
+
+mapping(uint => mapping(uint => address))layers;
 
 //the container for labels
 //the labels for "the container for labels"
@@ -79,10 +81,11 @@ controller=control;
 
 function setLabel(uint labeltype,uint labelindex,string label,address creator,bool exposed)returns(bool){
 if((msg.sender!=owner)&&(msg.sender!=controller))throw;
-if(labeltype==100)if(!stringtaken[labelindex]){stringLabels[labelindex]=label;stringLayerCreator[labelindex]=creator;stringtaken[labelindex]=true;if(exposed)stringexposed.push(labelindex);}
-if(labeltype==101)if(!uinttaken[labelindex]){uintLabels[labelindex]=label;uintLayerCreator[labelindex]=creator;uinttaken[labelindex]=true;if(exposed)uintexposed.push(labelindex);}
-if(labeltype==102)if(!booltaken[labelindex]){boolLabels[labelindex]=label;boolLayerCreator[labelindex]=creator;booltaken[labelindex]=true;if(exposed)boolexposed.push(labelindex);}
-if(labeltype==103)if(!addresstaken[labelindex]){addressLabels[labelindex]=label;addressLayerCreator[labelindex]=creator;addresstaken[labelindex]=true;if(exposed)addressexposed.push(labelindex);}
+if(labelindex==0)throw;
+if(labeltype==100)if(!stringtaken[labelindex]){layers[1][labelindex]=placeholder.createLayerPlaceHolder(creator);stringLabels[labelindex]=label;stringLayerCreator[labelindex]=creator;stringtaken[labelindex]=true;if(exposed)stringexposed.push(labelindex);}
+if(labeltype==101)if(!uinttaken[labelindex]){layers[2][labelindex]=placeholder.createLayerPlaceHolder(creator);uintLabels[labelindex]=label;uintLayerCreator[labelindex]=creator;uinttaken[labelindex]=true;if(exposed)uintexposed.push(labelindex);}
+if(labeltype==102)if(!booltaken[labelindex]){layers[3][labelindex]=placeholder.createLayerPlaceHolder(creator);boolLabels[labelindex]=label;boolLayerCreator[labelindex]=creator;booltaken[labelindex]=true;if(exposed)boolexposed.push(labelindex);}
+if(labeltype==103)if(!addresstaken[labelindex]){layers[4][labelindex]=placeholder.createLayerPlaceHolder(creator);addressLabels[labelindex]=label;addressLayerCreator[labelindex]=creator;addresstaken[labelindex]=true;if(exposed)addressexposed.push(labelindex);}
 logs.push(log(msg.sender,label,0x0,labeltype));
 return true;
 }
@@ -125,6 +128,12 @@ controller=c;
 return true;
 }
 
+function setPlaceholder(address p)returns(bool){
+if(msg.sender!=owner)throw;
+logs.push(log(owner,"setPlaceHolder Generator",p,2));
+placeholder=p;
+return true;
+}
 
 //WRITE FUNCTIONS
 
@@ -173,25 +182,23 @@ if(t==4){uu=uintexposed[u];ll=uintexposed.length;}
 return(uu,ll);
 }
 
-function readString(address addr,uint index)constant returns (string,string,address){
-return (socialString[addr][index],stringLabels[index],stringLayerCreator[index]);
+
+function readString(address addr,uint index)constant returns (string,string,address,address){
+return (socialString[addr][index],stringLabels[index],stringLayerCreator[index],layers[1][index]);
 }
 
-function readUint(address addr,uint index)constant returns (uint,string,address){
-return (socialUint[addr][index],uintLabels[index],uintLayerCreator[index]);
+function readUint(address addr,uint index)constant returns (uint,string,address,address){
+return (socialUint[addr][index],uintLabels[index],uintLayerCreator[index],layers[2][index]);
 }
 
-function readBool(address addr,uint index)constant returns (bool,string,address){
-return (socialBool[addr][index],boolLabels[index],boolLayerCreator[index]);
+function readBool(address addr,uint index)constant returns (bool,string,address,address){
+return (socialBool[addr][index],boolLabels[index],boolLayerCreator[index],layers[3][index]);
 }
 
-function readAddress(address addr,uint index)constant returns (address,string,address){
-return (socialAddress[addr][index],addressLabels[index],addressLayerCreator[index]);
+function readAddress(address addr,uint index)constant returns (address,string,address,address){
+return (socialAddress[addr][index],addressLabels[index],addressLayerCreator[index],layers[4][index]);
 }
 
-function readString(address addr,uint t,uint index)constant returns (string,string,address){
-return (socialString[addr][index],stringLabels[index],stringLayerCreator[index]);
-}
 
 
 //PERMISSIONS
