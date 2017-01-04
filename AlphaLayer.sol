@@ -58,7 +58,7 @@ mapping(uint => address)addressLayerCreator;
 //personal container for permissioned dapps
 mapping(address => address[])permissions;
 //the list of layers a given dapp has the permission to write in behalf of an address
-mapping(address => mapping(address => uint[]))permissionsTarget;
+mapping(uint => mapping(address => mapping(address => uint[])))permissionsTarget;
 //a simple "oracle" where you can check if a guy gave permission to a dapp for a specific layer
 mapping(uint => mapping(address => mapping(address => mapping(uint => bool))))allowed;
 
@@ -149,7 +149,7 @@ return true;
 
 function addString(address d,address addr,uint index,string info) returns(bool){
 dapp=Dapp(d);
-if((msg.sender!=addr)&&(msg.sender!=dapp.owner())&&(msg.sender!=controller)&&(!allowed[addr][msg.sender][index]))throw;
+if((msg.sender!=addr)&&(msg.sender!=dapp.owner())&&(msg.sender!=controller)&&(!allowed[1][addr][msg.sender][index]))throw;
 socialString[addr][index]=info;
 records++;
 return true;
@@ -157,7 +157,7 @@ return true;
 
 function addUint(address d,address addr,uint index,uint quant) returns(bool){
 dapp=Dapp(d);
-if((msg.sender!=addr)&&(msg.sender!=dapp.owner())&&(msg.sender!=controller)&&(!allowed[addr][msg.sender][index]))throw;
+if((msg.sender!=addr)&&(msg.sender!=dapp.owner())&&(msg.sender!=controller)&&(!allowed[2][addr][msg.sender][index]))throw;
 socialUint[addr][index]=quant;
 records++;
 return true;
@@ -165,7 +165,7 @@ return true;
 
 function addBool(address d,address addr,uint index,bool check) returns(bool){
 dapp=Dapp(d);
-if((msg.sender!=addr)&&(msg.sender!=dapp.owner())&&(msg.sender!=controller)&&(!allowed[addr][msg.sender][index]))throw;
+if((msg.sender!=addr)&&(msg.sender!=dapp.owner())&&(msg.sender!=controller)&&(!allowed[3][addr][msg.sender][index]))throw;
 socialBool[addr][index]=check;
 records++;
 return true;
@@ -173,7 +173,7 @@ return true;
 
 function addAddress(address d,address addr,uint index,address addr2) returns(bool){
 dapp=Dapp(d);
-if((msg.sender!=addr)&&(msg.sender!=dapp.owner())&&(msg.sender!=controller)&&(!allowed[addr][msg.sender][index]))throw;
+if((msg.sender!=addr)&&(msg.sender!=dapp.owner())&&(msg.sender!=controller)&&(!allowed[4][addr][msg.sender][index]))throw;
 socialAddress[addr][index]=addr2;
 records++;
 return true;
@@ -181,7 +181,7 @@ return true;
 
 function addByte(address d,address addr,uint index,byte info) returns(bool){
 dapp=Dapp(d);
-if((msg.sender!=addr)&&(msg.sender!=dapp.owner())&&(msg.sender!=controller)&&(!allowed[addr][msg.sender][index]))throw;
+if((msg.sender!=addr)&&(msg.sender!=dapp.owner())&&(msg.sender!=controller)&&(!allowed[5][addr][msg.sender][index]))throw;
 socialByte[addr][index]=info;
 records++;
 return true;
@@ -233,18 +233,18 @@ permissions[msg.sender].push(a);
 permissionsTarget[msg.sender][a].push(u);
 allowed[group][msg.sender][a][u]=true;}
 }else{
-for( uint i=0;i<permissionsTarget[msg.sender][a].length;i++){
+for( uint i=0;i<permissionsTarget[group][msg.sender][a].length;i++){
 //find and remove layer
-   if(permissionsTarget[msg.sender][a][i]==u){
+   if(permissionsTarget[group][msg.sender][a][i]==u){
 
-      if(i<permissionsTarget[msg.sender][a].length-1){
-          permissionsTarget[msg.sender][a][i]=permissionsTarget[msg.sender][a][permissionsTarget[msg.sender][a].length-1];
-          permissionsTarget[msg.sender][a][permissionsTarget[msg.sender][a].length-1]=0;
+      if(i<permissionsTarget[group][msg.sender][a].length-1){
+          permissionsTarget[group][msg.sender][a][i]=permissionsTarget[group][msg.sender][a][permissionsTarget[group][msg.sender][a].length-1];
+          permissionsTarget[group][msg.sender][a][permissionsTarget[group][msg.sender][a].length-1]=0;
       }else{
-          permissionsTarget[msg.sender][a][i]=0;
+          permissionsTarget[group][msg.sender][a][i]=0;
       }
 
-      permissionsTarget[msg.sender][a].length--;
+      permissionsTarget[group][msg.sender][a].length--;
    }
 }
 allowed[group][msg.sender][a][u]=false;
@@ -253,7 +253,7 @@ return true;
 }
 
 function readPermissions(uint group,address a,address d,uint u)constant returns (address,uint,uint,uint,bool){
-return (permissions[a][u],permissions[a].length,permissionsTarget[a][d][u],permissionsTarget[a][d].length,allowed[group][a][d][u]);
+return (permissions[a][u],permissions[a].length,permissionsTarget[group][a][d][u],permissionsTarget[a][d].length,allowed[group][a][d][u]);
 }
 
 
