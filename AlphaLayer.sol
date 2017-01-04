@@ -48,24 +48,33 @@ mapping(address => mapping(uint => address))socialAddress;
 mapping(uint => string)addressLabels;
 mapping(uint => address)addressLayerCreator;
 
+//the container for bytes
+//the labels for "the container for bytes"
+//the creator of that layer
+mapping(address => mapping(uint => bytes))socialByte;
+mapping(uint => string)addressLabels;
+mapping(uint => address)addressLayerCreator;
+
 //personal container for permissioned dapps
 mapping(address => address[])permissions;
 //the list of layers a given dapp has the permission to write in behalf of an address
 mapping(address => mapping(address => uint[]))permissionsTarget;
 //a simple "oracle" where you can check if a guy gave permission to a dapp for a specific layer
-mapping(address => mapping(address => mapping(uint => bool)))allowed;
+mapping(uint => mapping(address => mapping(address => mapping(uint => bool))))allowed;
 
 //once a layer is created it is also locked, no one can take it or overwrite its label
 mapping(uint => bool)stringtaken;
 mapping(uint => bool)addresstaken;
 mapping(uint => bool)booltaken;
 mapping(uint => bool)uinttaken;
+mapping(uint => bool)bytetaken;
 
 //some layers are exposed and indexed, the others are "inner functional layers" used by dapps for internal procedures
 uint[] stringexposed;
 uint[] addressexposed;
 uint[] boolexposed;
 uint[] uintexposed;
+uint[] byteexposed;
 
 
 function AlphaLayer(address control){
@@ -86,6 +95,7 @@ if(labeltype==100)if(!stringtaken[labelindex]){layers[1][labelindex]=placeholder
 if(labeltype==101)if(!uinttaken[labelindex]){layers[2][labelindex]=placeholder.createLayerPlaceHolder(creator);uintLabels[labelindex]=label;uintLayerCreator[labelindex]=creator;uinttaken[labelindex]=true;if(exposed)uintexposed.push(labelindex);}
 if(labeltype==102)if(!booltaken[labelindex]){layers[3][labelindex]=placeholder.createLayerPlaceHolder(creator);boolLabels[labelindex]=label;boolLayerCreator[labelindex]=creator;booltaken[labelindex]=true;if(exposed)boolexposed.push(labelindex);}
 if(labeltype==103)if(!addresstaken[labelindex]){layers[4][labelindex]=placeholder.createLayerPlaceHolder(creator);addressLabels[labelindex]=label;addressLayerCreator[labelindex]=creator;addresstaken[labelindex]=true;if(exposed)addressexposed.push(labelindex);}
+if(labeltype==104)if(!bytetaken[labelindex]){layers[5][labelindex]=placeholder.createLayerPlaceHolder(creator);byteLabels[labelindex]=label;byteLayerCreator[labelindex]=creator;bytetaken[labelindex]=true;if(exposed)byteexposed.push(labelindex);}
 logs.push(log(msg.sender,label,0x0,labeltype));
 return true;
 }
@@ -169,6 +179,14 @@ records++;
 return true;
 }
 
+function addByte(address d,address addr,uint index,byte info) returns(bool){
+dapp=Dapp(d);
+if((msg.sender!=addr)&&(msg.sender!=dapp.owner())&&(msg.sender!=controller)&&(!allowed[addr][msg.sender][index]))throw;
+socialByte[addr][index]=info;
+records++;
+return true;
+}
+
 
 //READ FUNCTIONS
 
@@ -179,6 +197,7 @@ if(t==1){uu=stringexposed[u];ll=stringexposed.length;}
 if(t==2){uu=addressexposed[u];ll=addressexposed.length;}
 if(t==3){uu=boolexposed[u];ll=boolexposed.length;}
 if(t==4){uu=uintexposed[u];ll=uintexposed.length;}
+if(t==5){uu=byteexposed[u];ll=byteexposed.length;}
 return(uu,ll);
 }
 
@@ -199,16 +218,20 @@ function readAddress(address addr,uint index)constant returns (address,string,ad
 return (socialAddress[addr][index],addressLabels[index],addressLayerCreator[index],layers[4][index]);
 }
 
+function readByte(address addr,uint index)constant returns (byte,string,address,address){
+return (socialByte[addr][index],byteLabels[index],byteLayerCreator[index],layers[5][index]);
+}
+
 
 
 //PERMISSIONS
 
-function allow(address a,uint u,bool b)returns (bool){
+function allow(uint group,address a,uint u,bool b)returns (bool){
 if(b){
-if(!allowed[msg.sender][a][u]){
+if(!allowed[group][msg.sender][a][u]){
 permissions[msg.sender].push(a);
 permissionsTarget[msg.sender][a].push(u);
-allowed[msg.sender][a][u]=true;}
+allowed[group][msg.sender][a][u]=true;}
 }else{
 for( uint i=0;i<permissionsTarget[msg.sender][a].length;i++){
 //find and remove layer
@@ -224,13 +247,13 @@ for( uint i=0;i<permissionsTarget[msg.sender][a].length;i++){
       permissionsTarget[msg.sender][a].length--;
    }
 }
-allowed[msg.sender][a][u]=false;
+allowed[group][msg.sender][a][u]=false;
 }
 return true;
 }
 
-function readPermissions(address a,address d,uint u)constant returns (address,uint,uint,uint,bool){
-return (permissions[a][u],permissions[a].length,permissionsTarget[a][d][u],permissionsTarget[a][d].length,allowed[a][d][u]);
+function readPermissions(uint group,address a,address d,uint u)constant returns (address,uint,uint,uint,bool){
+return (permissions[a][u],permissions[a].length,permissionsTarget[a][d][u],permissionsTarget[a][d].length,allowed[group][a][d][u]);
 }
 
 
