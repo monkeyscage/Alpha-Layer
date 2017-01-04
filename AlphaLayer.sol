@@ -1,10 +1,10 @@
 pragma solidity ^0.4.6;
 
-contract LayerPlaceholder{function createLayerPlaceholder(address c)returns(address){}}
+contract LayerPlaceholder{function createLayerPlaceHolder(address c)public returns(address){}}
 contract Dapp{address public owner;}
 
 contract AlphaLayer{
-PlaceHolder placeholder;
+LayerPlaceholder placeholder;
 //standard for all Alpha Layer enabled Dapps
 //if your contract contains this variable, the owner can control the related informations on the Alpha Layer
 address public owner;
@@ -131,7 +131,7 @@ return true;
 function setPlaceholder(address p)returns(bool){
 if(msg.sender!=owner)throw;
 logs.push(log(owner,"setPlaceHolder Generator",p,2));
-placeholder=p;
+placeholder=LayerPlaceholder(p);
 return true;
 }
 
