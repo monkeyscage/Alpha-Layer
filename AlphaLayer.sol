@@ -76,6 +76,12 @@ uint[] boolexposed;
 uint[] uintexposed;
 uint[] byteexposed;
 
+mapping(uint => bool)stringowned;
+mapping(uint => bool)addressowned;
+mapping(uint => bool)boolowned;
+mapping(uint => bool)uintowned;
+mapping(uint => bool)byteowned;
+
 
 function AlphaLayer(address control){
 owner=msg.sender;
@@ -88,7 +94,7 @@ controller=control;
 
 //creation of new layers
 
-function setLabel(uint labeltype,uint labelindex,string label,address creator,bool exposed)returns(bool){
+function setLabel(uint labeltype,uint labelindex,string label,address creator,bool exposed,bool owned)returns(bool){
 if((msg.sender!=owner)&&(msg.sender!=controller))throw;
 if(labelindex==0)throw;
 if(labeltype==100)if(!stringtaken[labelindex]){layers[1][labelindex]=placeholder.createLayerPlaceHolder(creator);stringLabels[labelindex]=label;stringLayerCreator[labelindex]=creator;stringtaken[labelindex]=true;if(exposed)stringexposed.push(labelindex);}
@@ -202,24 +208,24 @@ return(uu,ll);
 }
 
 
-function readString(address addr,uint index)constant returns (string,string,address,address){
-return (socialString[addr][index],stringLabels[index],stringLayerCreator[index],layers[1][index]);
+function readString(address addr,uint index)constant returns (string,string,address,address,bool){
+return (socialString[addr][index],stringLabels[index],stringLayerCreator[index],layers[1][index],stringowned[index]);
 }
 
-function readUint(address addr,uint index)constant returns (uint,string,address,address){
-return (socialUint[addr][index],uintLabels[index],uintLayerCreator[index],layers[2][index]);
+function readUint(address addr,uint index)constant returns (uint,string,address,address,bool){
+return (socialUint[addr][index],uintLabels[index],uintLayerCreator[index],layers[2][index],uintowned[index]);
 }
 
-function readBool(address addr,uint index)constant returns (bool,string,address,address){
-return (socialBool[addr][index],boolLabels[index],boolLayerCreator[index],layers[3][index]);
+function readBool(address addr,uint index)constant returns (bool,string,address,address,bool){
+return (socialBool[addr][index],boolLabels[index],boolLayerCreator[index],layers[3][index],boolowned[index]);
 }
 
-function readAddress(address addr,uint index)constant returns (address,string,address,address){
-return (socialAddress[addr][index],addressLabels[index],addressLayerCreator[index],layers[4][index]);
+function readAddress(address addr,uint index)constant returns (address,string,address,address,bool){
+return (socialAddress[addr][index],addressLabels[index],addressLayerCreator[index],layers[4][index],addressowned[index]);
 }
 
-function readByte(address addr,uint index)constant returns (bytes,string,address,address){
-return (socialByte[addr][index],byteLabels[index],byteLayerCreator[index],layers[5][index]);
+function readByte(address addr,uint index)constant returns (bytes,string,address,address,bool){
+return (socialByte[addr][index],byteLabels[index],byteLayerCreator[index],layers[5][index],byteowned[index]);
 }
 
 
