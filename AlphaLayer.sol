@@ -82,11 +82,6 @@ mapping(uint => bool)boolowned;
 mapping(uint => bool)uintowned;
 mapping(uint => bool)byteowned;
 
-mapping(uint => address)stringowner;
-mapping(uint => address)addressowner;
-mapping(uint => address)boolowner;
-mapping(uint => address)uintowner;
-mapping(uint => address)byteowner;
 
 
 function AlphaLayer(address control){
@@ -103,11 +98,11 @@ controller=control;
 function setLabel(uint labeltype,uint labelindex,string label,address creator,bool exposed,bool owned)returns(bool){
 if((msg.sender!=owner)&&(msg.sender!=controller))throw;
 if(labelindex==0)throw;
-if(labeltype==100)if(!stringtaken[labelindex]){layers[1][labelindex]=placeholder.createLayerPlaceHolder(creator);stringLabels[labelindex]=label;stringLayerCreator[labelindex]=creator;stringtaken[labelindex]=true;if(exposed)stringexposed.push(labelindex);}
-if(labeltype==101)if(!uinttaken[labelindex]){layers[2][labelindex]=placeholder.createLayerPlaceHolder(creator);uintLabels[labelindex]=label;uintLayerCreator[labelindex]=creator;uinttaken[labelindex]=true;if(exposed)uintexposed.push(labelindex);}
-if(labeltype==102)if(!booltaken[labelindex]){layers[3][labelindex]=placeholder.createLayerPlaceHolder(creator);boolLabels[labelindex]=label;boolLayerCreator[labelindex]=creator;booltaken[labelindex]=true;if(exposed)boolexposed.push(labelindex);}
-if(labeltype==103)if(!addresstaken[labelindex]){layers[4][labelindex]=placeholder.createLayerPlaceHolder(creator);addressLabels[labelindex]=label;addressLayerCreator[labelindex]=creator;addresstaken[labelindex]=true;if(exposed)addressexposed.push(labelindex);}
-if(labeltype==104)if(!bytetaken[labelindex]){layers[5][labelindex]=placeholder.createLayerPlaceHolder(creator);byteLabels[labelindex]=label;byteLayerCreator[labelindex]=creator;bytetaken[labelindex]=true;if(exposed)byteexposed.push(labelindex);}
+if(labeltype==100)if(!stringtaken[labelindex]){layers[1][labelindex]=placeholder.createLayerPlaceHolder(creator);stringLabels[labelindex]=label;stringLayerCreator[labelindex]=creator;stringtaken[labelindex]=true;if(exposed)stringexposed.push(labelindex);stringowned[labelindex]=true;}
+if(labeltype==101)if(!uinttaken[labelindex]){layers[2][labelindex]=placeholder.createLayerPlaceHolder(creator);uintLabels[labelindex]=label;uintLayerCreator[labelindex]=creator;uinttaken[labelindex]=true;if(exposed)uintexposed.push(labelindex);uintowned[labelindex]=true;}
+if(labeltype==102)if(!booltaken[labelindex]){layers[3][labelindex]=placeholder.createLayerPlaceHolder(creator);boolLabels[labelindex]=label;boolLayerCreator[labelindex]=creator;booltaken[labelindex]=true;if(exposed)boolexposed.push(labelindex);boolowned[labelindex]=true;}
+if(labeltype==103)if(!addresstaken[labelindex]){layers[4][labelindex]=placeholder.createLayerPlaceHolder(creator);addressLabels[labelindex]=label;addressLayerCreator[labelindex]=creator;addresstaken[labelindex]=true;if(exposed)addressexposed.push(labelindex);addressowned[labelindex]=true;}
+if(labeltype==104)if(!bytetaken[labelindex]){layers[5][labelindex]=placeholder.createLayerPlaceHolder(creator);byteLabels[labelindex]=label;byteLayerCreator[labelindex]=creator;bytetaken[labelindex]=true;if(exposed)byteexposed.push(labelindex);byteowned[labelindex]=true;}
 logs.push(log(msg.sender,label,0x0,labeltype));
 return true;
 }
@@ -178,8 +173,8 @@ dapp=Dapp(d);
 if((msg.sender!=addr)&&(msg.sender!=dapp.owner())&&(msg.sender!=controller)&&(!allowed[2][addr][msg.sender][index]))throw;
 socialUint[addr][index]=quant;
 }else{
-if(msg.sender!=uintowner[index])throw;
-socialUint[uintowner[index]][index]=quant;
+if(msg.sender!=uintLayerCreator[index])throw;
+socialUint[uintLayerCreator[index]][index]=quant;
 }
 records++;
 return true;
@@ -191,8 +186,8 @@ dapp=Dapp(d);
 if((!stringowned[index])&&(msg.sender!=addr)&&(msg.sender!=dapp.owner())&&(msg.sender!=controller)&&(!allowed[3][addr][msg.sender][index]))throw;
 socialBool[addr][index]=check;
 }else{
-if(msg.sender!=boolowner[index])throw;
-socialBool[boolowner[index]][index]=quant;
+if(msg.sender!=boolLayerCreator[index])throw;
+socialBool[boolLayerCreator[index]][index]=quant;
 }
 records++;
 return true;
@@ -204,8 +199,8 @@ dapp=Dapp(d);
 if((!stringowned[index])&&(msg.sender!=addr)&&(msg.sender!=dapp.owner())&&(msg.sender!=controller)&&(!allowed[4][addr][msg.sender][index]))throw;
 socialAddress[addr][index]=addr2;
 }else{
-if(msg.sender!=addressowner[index])throw;
-socialAddress[addressowner[index]][index]=quant;
+if(msg.sender!=addressLayerCreator[index])throw;
+socialAddress[addressLayerCreator[index]][index]=quant;
 }
 records++;
 return true;
@@ -217,8 +212,8 @@ dapp=Dapp(d);
 if((!stringowned[index])&&(msg.sender!=addr)&&(msg.sender!=dapp.owner())&&(msg.sender!=controller)&&(!allowed[5][addr][msg.sender][index]))throw;
 socialByte[addr][index]=info;
 }else{
-if(msg.sender!=byteowner[index])throw;
-socialByte[byteowner[index]][index]=quant;
+if(msg.sender!=byteLayerCreator[index])throw;
+socialByte[byteLayerCreator[index]][index]=quant;
 }
 records++;
 return true;
