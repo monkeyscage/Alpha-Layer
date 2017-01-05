@@ -111,23 +111,23 @@ return true;
 
 function init(){
 //the very basic layers needed so far
-setLabel(100,1,"name",this,true);
-setLabel(100,2,"address",this,true);
-setLabel(100,3,"email",this,true);
-setLabel(100,4,"disclaimer",this,true);
-setLabel(100,5,"logo512*512",this,true);
-setLabel(100,6,"logo256*256",this,true);
-setLabel(100,7,"logo128*128",this,true);
-setLabel(100,8,"logo64*64",this,true);
-setLabel(100,9,"logo32*32",this,true);
-setLabel(100,10,"logo16*16",this,true);
-setLabel(100,11,"owner",this,true);
-setLabel(100,12,"Github",this,true);
-setLabel(100,13,"Twitter Account",this,true);
-setLabel(100,14,"Twitter Widget",this,true);
-setLabel(100,15,"Twitter Widget@",this,true);
-setLabel(100,16,"Facebook",this,true);
-setLabel(100,17,"Google",this,true);
+setLabel(100,1,"name",this,true,false);
+setLabel(100,2,"address",this,true,false);
+setLabel(100,3,"email",this,true,false);
+setLabel(100,4,"disclaimer",this,true,false);
+setLabel(100,5,"logo512*512",this,true,false);
+setLabel(100,6,"logo256*256",this,true,false);
+setLabel(100,7,"logo128*128",this,true,false);
+setLabel(100,8,"logo64*64",this,true,false);
+setLabel(100,9,"logo32*32",this,true,false);
+setLabel(100,10,"logo16*16",this,true,false);
+setLabel(100,11,"owner",this,true,false);
+setLabel(100,12,"Github",this,true,false);
+setLabel(100,13,"Twitter Account",this,true,false);
+setLabel(100,14,"Twitter Widget",this,true,false);
+setLabel(100,15,"Twitter Widget@",this,true,false);
+setLabel(100,16,"Facebook",this,true,false);
+setLabel(100,17,"Google",this,true,false);
 }
 
 function setOwner(address o)returns(bool){
@@ -155,7 +155,7 @@ return true;
 
 function addString(address d,address addr,uint index,string info) returns(bool){
 dapp=Dapp(d);
-if((msg.sender!=addr)&&(msg.sender!=dapp.owner())&&(msg.sender!=controller)&&(!allowed[1][addr][msg.sender][index]))throw;
+if((!stringowned[index])&&(msg.sender!=addr)&&(msg.sender!=dapp.owner())&&(msg.sender!=controller)&&(!allowed[1][addr][msg.sender][index]))throw;
 socialString[addr][index]=info;
 records++;
 return true;
@@ -163,7 +163,7 @@ return true;
 
 function addUint(address d,address addr,uint index,uint quant) returns(bool){
 dapp=Dapp(d);
-if((msg.sender!=addr)&&(msg.sender!=dapp.owner())&&(msg.sender!=controller)&&(!allowed[2][addr][msg.sender][index]))throw;
+if((!stringowned[index])&&(msg.sender!=addr)&&(msg.sender!=dapp.owner())&&(msg.sender!=controller)&&(!allowed[2][addr][msg.sender][index]))throw;
 socialUint[addr][index]=quant;
 records++;
 return true;
@@ -171,7 +171,7 @@ return true;
 
 function addBool(address d,address addr,uint index,bool check) returns(bool){
 dapp=Dapp(d);
-if((msg.sender!=addr)&&(msg.sender!=dapp.owner())&&(msg.sender!=controller)&&(!allowed[3][addr][msg.sender][index]))throw;
+if((!stringowned[index])&&(msg.sender!=addr)&&(msg.sender!=dapp.owner())&&(msg.sender!=controller)&&(!allowed[3][addr][msg.sender][index]))throw;
 socialBool[addr][index]=check;
 records++;
 return true;
@@ -179,7 +179,7 @@ return true;
 
 function addAddress(address d,address addr,uint index,address addr2) returns(bool){
 dapp=Dapp(d);
-if((msg.sender!=addr)&&(msg.sender!=dapp.owner())&&(msg.sender!=controller)&&(!allowed[4][addr][msg.sender][index]))throw;
+if((!stringowned[index])&&(msg.sender!=addr)&&(msg.sender!=dapp.owner())&&(msg.sender!=controller)&&(!allowed[4][addr][msg.sender][index]))throw;
 socialAddress[addr][index]=addr2;
 records++;
 return true;
@@ -187,7 +187,7 @@ return true;
 
 function addByte(address d,address addr,uint index,bytes info) returns(bool){
 dapp=Dapp(d);
-if((msg.sender!=addr)&&(msg.sender!=dapp.owner())&&(msg.sender!=controller)&&(!allowed[5][addr][msg.sender][index]))throw;
+if((!stringowned[index])&&(msg.sender!=addr)&&(msg.sender!=dapp.owner())&&(msg.sender!=controller)&&(!allowed[5][addr][msg.sender][index]))throw;
 socialByte[addr][index]=info;
 records++;
 return true;
