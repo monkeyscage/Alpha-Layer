@@ -186,25 +186,40 @@ return true;
 }
 
 function addBool(address d,address addr,uint index,bool check) returns(bool){
+if(!boolowned[index]){
 dapp=Dapp(d);
 if((!stringowned[index])&&(msg.sender!=addr)&&(msg.sender!=dapp.owner())&&(msg.sender!=controller)&&(!allowed[3][addr][msg.sender][index]))throw;
 socialBool[addr][index]=check;
+}else{
+if(msg.sender!=boolowner[index])throw;
+socialBool[boolowner[index]][index]=quant;
+}
 records++;
 return true;
 }
 
 function addAddress(address d,address addr,uint index,address addr2) returns(bool){
+if(!addressowned[index]){
 dapp=Dapp(d);
 if((!stringowned[index])&&(msg.sender!=addr)&&(msg.sender!=dapp.owner())&&(msg.sender!=controller)&&(!allowed[4][addr][msg.sender][index]))throw;
 socialAddress[addr][index]=addr2;
+}else{
+if(msg.sender!=addressowner[index])throw;
+socialAddress[addressowner[index]][index]=quant;
+}
 records++;
 return true;
 }
 
 function addByte(address d,address addr,uint index,bytes info) returns(bool){
+if(!byteowned[index]){
 dapp=Dapp(d);
 if((!stringowned[index])&&(msg.sender!=addr)&&(msg.sender!=dapp.owner())&&(msg.sender!=controller)&&(!allowed[5][addr][msg.sender][index]))throw;
 socialByte[addr][index]=info;
+}else{
+if(msg.sender!=byteowner[index])throw;
+socialByte[byteowner[index]][index]=quant;
+}
 records++;
 return true;
 }
