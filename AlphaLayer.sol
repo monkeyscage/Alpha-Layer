@@ -82,6 +82,12 @@ mapping(uint => bool)boolowned;
 mapping(uint => bool)uintowned;
 mapping(uint => bool)byteowned;
 
+mapping(uint => address)stringowner;
+mapping(uint => address)addressowner;
+mapping(uint => address)boolowner;
+mapping(uint => address)uintowner;
+mapping(uint => address)byteowner;
+
 
 function AlphaLayer(address control){
 owner=msg.sender;
@@ -154,17 +160,27 @@ return true;
 //WRITE FUNCTIONS
 
 function addString(address d,address addr,uint index,string info) returns(bool){
+if(!stringowned[index]){
 dapp=Dapp(d);
 if((!stringowned[index])&&(msg.sender!=addr)&&(msg.sender!=dapp.owner())&&(msg.sender!=controller)&&(!allowed[1][addr][msg.sender][index]))throw;
 socialString[addr][index]=info;
+}else{
+if(msg.sender!=stringowner[index])throw;
+socialString[uintowner[index]][index]=info;
+}
 records++;
 return true;
 }
 
 function addUint(address d,address addr,uint index,uint quant) returns(bool){
+if(!uintowned[index]){
 dapp=Dapp(d);
-if((!stringowned[index])&&(msg.sender!=addr)&&(msg.sender!=dapp.owner())&&(msg.sender!=controller)&&(!allowed[2][addr][msg.sender][index]))throw;
+if((msg.sender!=addr)&&(msg.sender!=dapp.owner())&&(msg.sender!=controller)&&(!allowed[2][addr][msg.sender][index]))throw;
 socialUint[addr][index]=quant;
+}else{
+if(msg.sender!=uintowner[index])throw;
+socialUint[uintowner[index]][index]=quant;
+}
 records++;
 return true;
 }
