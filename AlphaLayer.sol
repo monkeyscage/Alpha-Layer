@@ -103,7 +103,7 @@ if(labeltype==101)if(!uinttaken[labelindex]){layers[2][labelindex]=placeholder.c
 if(labeltype==102)if(!booltaken[labelindex]){layers[3][labelindex]=placeholder.createLayerPlaceHolder(creator);boolLabels[labelindex]=label;boolLayerCreator[labelindex]=creator;booltaken[labelindex]=true;if(exposed)boolexposed.push(labelindex);boolowned[labelindex]=true;}
 if(labeltype==103)if(!addresstaken[labelindex]){layers[4][labelindex]=placeholder.createLayerPlaceHolder(creator);addressLabels[labelindex]=label;addressLayerCreator[labelindex]=creator;addresstaken[labelindex]=true;if(exposed)addressexposed.push(labelindex);addressowned[labelindex]=true;}
 if(labeltype==104)if(!bytetaken[labelindex]){layers[5][labelindex]=placeholder.createLayerPlaceHolder(creator);byteLabels[labelindex]=label;byteLayerCreator[labelindex]=creator;bytetaken[labelindex]=true;if(exposed)byteexposed.push(labelindex);byteowned[labelindex]=true;}
-logs.push(log(msg.sender,label,0x0,labeltype));
+logs.push(log(creator,labeltype,labelindex));
 return true;
 }
 
@@ -292,17 +292,17 @@ return (permissions[a][u],permissions[a].length,permissionsTarget[group][a][d][u
 //DLog code
 
 log[] logs;
+public bytes logABI="auu";
 
     struct log{
-    address admin;
-    string action;
-    address addr;
-    uint code;
+    address creator;
+    uint group;
+    uint index;
    }
 
-function readLog(uint i)constant returns(address,string,address,uint){
+function readLog(uint i)constant returns(address,uint,uint){
 log l=logs[i];
-return(l.admin,l.action,l.addr,l.code);
+return(l.creator,l.group,l.index);
 }
 
 
