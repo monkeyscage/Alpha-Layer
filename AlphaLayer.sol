@@ -283,7 +283,7 @@ return (permissions[a][u],permissions[a].length,permissionsTarget[group][a][d][u
 }
 
 
-//DLog code
+//BLOCKLOG code
 
 log[] logs;
 public string logABI="a-User|s-Layer Type|u-Layer|s-Action";
@@ -296,9 +296,9 @@ public string logABI="a-User|s-Layer Type|u-Layer|s-Action";
     uint blocknumber;
    }
 
-function readLog(uint i)constant returns(address,string,uint,string){
+function readLog(uint i)constant returns(uint,address,string,uint,string){
 log l=logs[i];
-return(l.creator,l.layertype,l.layer,l.action,l.blocknumber);
+return(l.length,l.creator,l.layertype,l.layer,l.action,l.blocknumber);
 }
 
 
