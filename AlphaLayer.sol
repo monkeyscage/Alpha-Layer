@@ -293,17 +293,18 @@ return (permissions[a][u],permissions[a].length,permissionsTarget[group][a][d][u
 //DLog code
 
 log[] logs;
-public bytes logABI="a-User|u-Layer Type|u-Layer|s-Label";
+public bytes logABI="a-User|u-Layer Type|u-Layer|s-Action";
 
     struct log{
     address creator;
-    address layer;
-    string action;
+    uint layertype;
+    uint layer;
+    string action
    }
 
-function readLog(uint i)constant returns(address,uint,string){
+function readLog(uint i)constant returns(address,uint,uint,string){
 log l=logs[i];
-return(l.creator,l.group,l.index);
+return(l.creator,l.layertype,l.layer,l.action);
 }
 
 
