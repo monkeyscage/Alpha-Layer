@@ -89,7 +89,7 @@ function AlphaLayer(address control){
 owner=msg.sender;
 records=0;
 controller=control;
-
+logs.push(log(msg.sender,"Deployment",0,"Created AlphaLayer 1.0",block.number));
 //not strictly necessary
 //init();
 }
@@ -99,12 +99,12 @@ controller=control;
 function setLabel(uint labeltype,uint labelindex,string label,address creator,bool exposed,bool owned)returns(bool){
 if((msg.sender!=owner)&&(msg.sender!=controller))throw;
 if(labelindex==0)throw;
-if(labeltype==100)if(!stringtaken[labelindex]){layers[1][labelindex]=placeholder.createLayerPlaceHolder(creator);address2layers[layers[1][labelindex]][1]=labelindex;stringLabels[labelindex]=label;stringLayerCreator[labelindex]=creator;stringtaken[labelindex]=true;if(exposed)stringexposed.push(labelindex);stringowned[labelindex]=true;}
-if(labeltype==101)if(!uinttaken[labelindex]){layers[2][labelindex]=placeholder.createLayerPlaceHolder(creator);address2layers[layers[2][labelindex]][2]=labelindex;uintLabels[labelindex]=label;uintLayerCreator[labelindex]=creator;uinttaken[labelindex]=true;if(exposed)uintexposed.push(labelindex);uintowned[labelindex]=true;}
-if(labeltype==102)if(!booltaken[labelindex]){layers[3][labelindex]=placeholder.createLayerPlaceHolder(creator);address2layers[layers[3][labelindex]][3]=labelindex;boolLabels[labelindex]=label;boolLayerCreator[labelindex]=creator;booltaken[labelindex]=true;if(exposed)boolexposed.push(labelindex);boolowned[labelindex]=true;}
-if(labeltype==103)if(!addresstaken[labelindex]){layers[4][labelindex]=placeholder.createLayerPlaceHolder(creator);address2layers[layers[4][labelindex]][4]=labelindex;addressLabels[labelindex]=label;addressLayerCreator[labelindex]=creator;addresstaken[labelindex]=true;if(exposed)addressexposed.push(labelindex);addressowned[labelindex]=true;}
-if(labeltype==104)if(!bytetaken[labelindex]){layers[5][labelindex]=placeholder.createLayerPlaceHolder(creator);address2layers[layers[5][labelindex]][5]=labelindex;byteLabels[labelindex]=label;byteLayerCreator[labelindex]=creator;bytetaken[labelindex]=true;if(exposed)byteexposed.push(labelindex);byteowned[labelindex]=true;}
-logs.push(log(creator,labeltype,));
+if(labeltype==100)if(!stringtaken[labelindex]){logs.push(log(creator,"string",labelindex,label,block.number));layers[1][labelindex]=placeholder.createLayerPlaceHolder(creator);address2layers[layers[1][labelindex]][1]=labelindex;stringLabels[labelindex]=label;stringLayerCreator[labelindex]=creator;stringtaken[labelindex]=true;if(exposed)stringexposed.push(labelindex);stringowned[labelindex]=true;}
+if(labeltype==101)if(!uinttaken[labelindex]){logs.push(log(creator,"uint",labelindex,label,block.number));layers[2][labelindex]=placeholder.createLayerPlaceHolder(creator);address2layers[layers[2][labelindex]][2]=labelindex;uintLabels[labelindex]=label;uintLayerCreator[labelindex]=creator;uinttaken[labelindex]=true;if(exposed)uintexposed.push(labelindex);uintowned[labelindex]=true;}
+if(labeltype==102)if(!booltaken[labelindex]){logs.push(log(creator,"bool",labelindex,label,block.number));layers[3][labelindex]=placeholder.createLayerPlaceHolder(creator);address2layers[layers[3][labelindex]][3]=labelindex;boolLabels[labelindex]=label;boolLayerCreator[labelindex]=creator;booltaken[labelindex]=true;if(exposed)boolexposed.push(labelindex);boolowned[labelindex]=true;}
+if(labeltype==103)if(!addresstaken[labelindex]){logs.push(log(creator,"address",labelindex,label,block.number));layers[4][labelindex]=placeholder.createLayerPlaceHolder(creator);address2layers[layers[4][labelindex]][4]=labelindex;addressLabels[labelindex]=label;addressLayerCreator[labelindex]=creator;addresstaken[labelindex]=true;if(exposed)addressexposed.push(labelindex);addressowned[labelindex]=true;}
+if(labeltype==104)if(!bytetaken[labelindex]){logs.push(log(creator,"bytes",labelindex,label,block.number));layers[5][labelindex]=placeholder.createLayerPlaceHolder(creator);address2layers[layers[5][labelindex]][5]=labelindex;byteLabels[labelindex]=label;byteLayerCreator[labelindex]=creator;bytetaken[labelindex]=true;if(exposed)byteexposed.push(labelindex);byteowned[labelindex]=true;}
+
 return true;
 }
 
@@ -132,24 +132,17 @@ setLabel(100,16,"Facebook",this,true,false);
 setLabel(100,17,"Google",this,true,false);
 }
 
-function setOwner(address o)returns(bool){
+function manager(address o,uint u)returns(bool){
 if(msg.sender!=owner)throw;
-logs.push(log(owner,"setOwner",o,0));
-owner=o;
-return true;
-}
-
-function setController(address c)returns(bool){
-if(msg.sender!=owner)throw;
-logs.push(log(owner,"setController",c,1));
-controller=c;
-return true;
-}
-
-function setPlaceholder(address p)returns(bool){
-if(msg.sender!=owner)throw;
-logs.push(log(owner,"setPlaceHolder Generator",p,2));
-placeholder=LayerPlaceholder(p);
+if(u==100){
+logs.push(log(o,"setOwner()",0,"",block.number));
+owner=o;}
+if(u==101){
+logs.push(log(o,"setController()",0,"",block.number));
+controller=o;}
+if(u==102){
+logs.push(log(o,"setPlaceHolder()",0,"",block.number));
+placeholder=LayerPlaceholder(o);}
 return true;
 }
 
@@ -293,18 +286,19 @@ return (permissions[a][u],permissions[a].length,permissionsTarget[group][a][d][u
 //DLog code
 
 log[] logs;
-public bytes logABI="a-User|u-Layer Type|u-Layer|s-Action";
+public string logABI="a-User|s-Layer Type|u-Layer|s-Action";
 
     struct log{
     address creator;
-    uint layertype;
+    string layertype;
     uint layer;
     string action
+    uint blocknumber;
    }
 
-function readLog(uint i)constant returns(address,uint,uint,string){
+function readLog(uint i)constant returns(address,string,uint,string){
 log l=logs[i];
-return(l.creator,l.layertype,l.layer,l.action);
+return(l.creator,l.layertype,l.layer,l.action,l.blocknumber);
 }
 
 
