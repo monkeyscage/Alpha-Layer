@@ -1,6 +1,6 @@
 pragma solidity ^0.4.6;
 
-contract LayerPlaceholder{function createLayerPlaceHolder(address c)public returns(address){}}
+contract LayerPlaceholder{function createLayerPlaceHolder(address c,uint type,uint layer)public returns(address){}}
 contract Dapp{address public owner;}
 
 contract AlphaLayer{
@@ -19,6 +19,7 @@ uint public records;
 Dapp dapp;
 
 mapping(uint => mapping(uint => address))layers;
+mapping(address => mapping(uint => uint))address2layers;
 
 //the container for labels
 //the labels for "the container for labels"
@@ -98,12 +99,12 @@ controller=control;
 function setLabel(uint labeltype,uint labelindex,string label,address creator,bool exposed,bool owned)returns(bool){
 if((msg.sender!=owner)&&(msg.sender!=controller))throw;
 if(labelindex==0)throw;
-if(labeltype==100)if(!stringtaken[labelindex]){layers[1][labelindex]=placeholder.createLayerPlaceHolder(creator);stringLabels[labelindex]=label;stringLayerCreator[labelindex]=creator;stringtaken[labelindex]=true;if(exposed)stringexposed.push(labelindex);stringowned[labelindex]=true;}
-if(labeltype==101)if(!uinttaken[labelindex]){layers[2][labelindex]=placeholder.createLayerPlaceHolder(creator);uintLabels[labelindex]=label;uintLayerCreator[labelindex]=creator;uinttaken[labelindex]=true;if(exposed)uintexposed.push(labelindex);uintowned[labelindex]=true;}
-if(labeltype==102)if(!booltaken[labelindex]){layers[3][labelindex]=placeholder.createLayerPlaceHolder(creator);boolLabels[labelindex]=label;boolLayerCreator[labelindex]=creator;booltaken[labelindex]=true;if(exposed)boolexposed.push(labelindex);boolowned[labelindex]=true;}
-if(labeltype==103)if(!addresstaken[labelindex]){layers[4][labelindex]=placeholder.createLayerPlaceHolder(creator);addressLabels[labelindex]=label;addressLayerCreator[labelindex]=creator;addresstaken[labelindex]=true;if(exposed)addressexposed.push(labelindex);addressowned[labelindex]=true;}
-if(labeltype==104)if(!bytetaken[labelindex]){layers[5][labelindex]=placeholder.createLayerPlaceHolder(creator);byteLabels[labelindex]=label;byteLayerCreator[labelindex]=creator;bytetaken[labelindex]=true;if(exposed)byteexposed.push(labelindex);byteowned[labelindex]=true;}
-logs.push(log(creator,labeltype,labelindex));
+if(labeltype==100)if(!stringtaken[labelindex]){layers[1][labelindex]=placeholder.createLayerPlaceHolder(creator);address2layers[layers[1][labelindex]][1]=labelindex;stringLabels[labelindex]=label;stringLayerCreator[labelindex]=creator;stringtaken[labelindex]=true;if(exposed)stringexposed.push(labelindex);stringowned[labelindex]=true;}
+if(labeltype==101)if(!uinttaken[labelindex]){layers[2][labelindex]=placeholder.createLayerPlaceHolder(creator);address2layers[layers[2][labelindex]][2]=labelindex;uintLabels[labelindex]=label;uintLayerCreator[labelindex]=creator;uinttaken[labelindex]=true;if(exposed)uintexposed.push(labelindex);uintowned[labelindex]=true;}
+if(labeltype==102)if(!booltaken[labelindex]){layers[3][labelindex]=placeholder.createLayerPlaceHolder(creator);address2layers[layers[3][labelindex]][3]=labelindex;boolLabels[labelindex]=label;boolLayerCreator[labelindex]=creator;booltaken[labelindex]=true;if(exposed)boolexposed.push(labelindex);boolowned[labelindex]=true;}
+if(labeltype==103)if(!addresstaken[labelindex]){layers[4][labelindex]=placeholder.createLayerPlaceHolder(creator);address2layers[layers[4][labelindex]][4]=labelindex;addressLabels[labelindex]=label;addressLayerCreator[labelindex]=creator;addresstaken[labelindex]=true;if(exposed)addressexposed.push(labelindex);addressowned[labelindex]=true;}
+if(labeltype==104)if(!bytetaken[labelindex]){layers[5][labelindex]=placeholder.createLayerPlaceHolder(creator);address2layers[layers[5][labelindex]][5]=labelindex;byteLabels[labelindex]=label;byteLayerCreator[labelindex]=creator;bytetaken[labelindex]=true;if(exposed)byteexposed.push(labelindex);byteowned[labelindex]=true;}
+logs.push(log(creator,labeltype,));
 return true;
 }
 
@@ -296,11 +297,11 @@ public bytes logABI="auu";
 
     struct log{
     address creator;
-    uint group;
-    uint index;
+    address layer;
+    string action;
    }
 
-function readLog(uint i)constant returns(address,uint,uint){
+function readLog(uint i)constant returns(address,uint,string){
 log l=logs[i];
 return(l.creator,l.group,l.index);
 }
