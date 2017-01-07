@@ -293,7 +293,7 @@ return (permissions[a][u],permissions[a].length,permissionsTarget[group][a][d][u
 //DLog code
 
 log[] logs;
-public bytes logABI="auu";
+public bytes logABI="a-User|u-Layer Type|u-Layer|s-Label";
 
     struct log{
     address creator;
