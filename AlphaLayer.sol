@@ -171,7 +171,7 @@ return true;
 
 
 function addString(address d,address addr,uint index,string info) returns(bool){
-   if(!stringowned[index]){
+   if(!owned[1][index]){
       if((msg.sender==addr)||(allowed[1][addr][msg.sender][index])||(msg.sender==controller)){
          socialString[addr][index]=info;
       }else{
@@ -188,7 +188,7 @@ function addString(address d,address addr,uint index,string info) returns(bool){
 
 
 function addUint(address d,address addr,uint index,uint quant) returns(bool){
-   if(!uintowned[index]){
+   if(!owned[2][index]){
       if((msg.sender==addr)||(allowed[2][addr][msg.sender][index])||(msg.sender==controller)){
          socialUint[addr][index]=quant;
       }else{
@@ -204,7 +204,7 @@ function addUint(address d,address addr,uint index,uint quant) returns(bool){
 }
 
 function addBool(address d,address addr,uint index,bool check) returns(bool){
-   if(!boolowned[index]){
+   if(!owned[3][index]){
       if((msg.sender==addr)||(allowed[3][addr][msg.sender][index])||(msg.sender==controller)){
          socialBool[addr][index]=check;
       }else{
@@ -222,7 +222,7 @@ function addBool(address d,address addr,uint index,bool check) returns(bool){
 
 
 function addAddress(address d,address addr,uint index,address addr2) returns(bool){
-   if(!addressowned[index]){
+   if(!owned[4][index]){
       if((msg.sender==addr)||(allowed[4][addr][msg.sender][index])||(msg.sender==controller)){
          socialAddress[addr][index]=addr2;
       }else{
@@ -238,7 +238,7 @@ function addAddress(address d,address addr,uint index,address addr2) returns(boo
 }
 
 function addByte(address d,address addr,uint index,bytes info) returns(bool){
-   if(!byteowned[index]){
+   if(!owned[5][index]){
       if((msg.sender==addr)||(allowed[5][addr][msg.sender][index])||(msg.sender==controller)){
          socialByte[addr][index]=info;
       }else{
@@ -259,13 +259,9 @@ function addByte(address d,address addr,uint index,bytes info) returns(bool){
 
 //some layers are exposed and visible and can be listed
 
-function exposed(uint t,uint u)constant returns(uint,uint){
+function exposed(uint g,uint u)constant returns(uint,uint){
 uint uu;uint ll;
-if(t==1){uu=stringexposed[u];ll=stringexposed.length;}
-if(t==2){uu=addressexposed[u];ll=addressexposed.length;}
-if(t==3){uu=boolexposed[u];ll=boolexposed.length;}
-if(t==4){uu=uintexposed[u];ll=uintexposed.length;}
-if(t==5){uu=byteexposed[u];ll=byteexposed.length;}
+uu=exposed[g][u];ll=exposed[g].length;
 return(uu,ll);
 }
 
