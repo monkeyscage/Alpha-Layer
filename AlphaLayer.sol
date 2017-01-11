@@ -85,7 +85,7 @@ logs.push(log(msg.sender,0,0,"Created AlphaLayer 1.0",block.number));
 
 //creation of new layers
 
-function setLabel(uint labeltype,uint labelindex,string label,address creator,bool exp,bool owned)returns(bool){
+function setLabel(uint labeltype,uint labelindex,string label,address creator,bool exp,bool own)returns(bool){
 if((msg.sender!=owner)&&(msg.sender!=controller))throw;
 if(labelindex==0)throw;
 
@@ -117,8 +117,8 @@ if(labeltype==5){
    address2index[layers[labeltype][labelindex]][labeltype]=labelindex;
    taken[labeltype][labelindex]=true;
    if(exp)exposed[labeltype].push(labelindex);
-   owned[labeltype][labelindex]=true;
-   createdLayer[creator][labeltype].push(labelindex);
+   owned[labeltype][labelindex]=own;
+   createdLayers[creator][labeltype].push(labelindex);
  }
 
 return true;
@@ -148,17 +148,17 @@ setLabel(100,16,"Facebook",this,true,false);
 setLabel(100,17,"Google",this,true,false);
 }
 
-function manager(address o,uint g,uint u,bool exposed)returns(bool){
+function manager(address o,uint g,uint u,bool exp)returns(bool){
 if(msg.sender!=owner)throw;
 if(u==97){
-logs.push(log(o,"setOwner()",0,"",block.number));
+logs.push(log(o,97,0,"",block.number));
 owner=o;}
 if(u==98){
-logs.push(log(o,"setController()",0,"",block.number));
+logs.push(log(o,98,0,"",block.number));
 controller=o;}
 if(u<=6){
 logs.push(log(o,g,u,"exposed",block.number));
-if(!exposed){exposed[g][u]=0;}else{exposed[g].push(u);}}
+if(!exp){exposed[g][u]=0;}else{exposed[g].push(u);}}
 return true;
 }
 
@@ -313,11 +313,11 @@ allowed[group][msg.sender][a][u]=false;
 return true;
 }
 
-function readPermissions(uint group,address a,address d,uint u)constant returns (address,uint,uint,uint,bool,uint,uint){
+function readPermissions(uint group,address a,address d,uint u)constant returns (address,uint,uint,uint,bool){
 return (permissions[a][u],permissions[a].length,permissionsTarget[group][a][d][u],permissionsTarget[group][a][d].length,allowed[group][a][d][u]);
 }
 
-function createdLayers(uint group,address a,uint u)constant returns (uint,uint){
+function created(uint group,address a,uint u)constant returns (uint,uint){
 return (createdLayers[a][group].length,createdLayers[a][group][u]);
 }
 
@@ -335,7 +335,7 @@ string public logABI="a-User|s-Layer Type|u-Layer|s-Action";
     uint blocknumber;
    }
 
-function readLog(uint i)constant returns(uint,address,string,uint,string,uint){
+function readLog(uint i)constant returns(uint,address,uint,uint,string,uint){
 log l=logs[i];
 uint u=logs.length;
 return(u,l.creator,l.layertype,l.layer,l.action,l.blocknumber);
