@@ -1,12 +1,12 @@
 pragma solidity ^0.4.6;
 
-contract LayerPlaceholder{address public owner;uint public type; uint public index; function LayerPlaceHolder(address creator,uint layerype,uint layer)public returns(bool){owner=creator;type=layertype;index=layer;}}
+contract LayerPlaceHolder{address public owner;uint public group; uint public index; function LayerPlaceHolder(address creator,uint layertype,uint layer){owner=creator;group=layertype;index=layer;}}
 contract Dapp{address public owner;}
 
 contract AlphaLayer{
 
 //the placeholder contract created for each newly created layer (so we can later Agument the Layer itself with informations!)
-LayerPlaceholder placeholder;
+
 
 
 //if your contract contains this variable, the owner can control the related informations on the Alpha Layer
@@ -191,7 +191,9 @@ logs.push(log(o,"setController()",0,"",block.number));
 controller=o;}
 if(u==99){
 logs.push(log(o,"setPlaceHolder()",0,"",block.number));
-placeholder=LayerPlaceholder(o);}
+//placeholder=LayerPlaceHolder(o);
+    
+}
 if(u==100){
 logs.push(log(o,"censored",u,"string Layer",block.number));
 if(!exposed){stringexposed[u]=0;}else{stringexposed.push(u);}}
@@ -373,19 +375,20 @@ return (permissions[a][u],permissions[a].length,permissionsTarget[group][a][d][u
 //BLOCKLOG code
 
 log[] logs;
-public string logABI="a-User|s-Layer Type|u-Layer|s-Action";
+string public logABI="a-User|s-Layer Type|u-Layer|s-Action";
 
     struct log{
     address creator;
     string layertype;
     uint layer;
-    string action
+    string action;
     uint blocknumber;
    }
 
-function readLog(uint i)constant returns(uint,address,string,uint,string){
+function readLog(uint i)constant returns(uint,address,string,uint,string,uint){
 log l=logs[i];
-return(l.length,l.creator,l.layertype,l.layer,l.action,l.blocknumber);
+uint u=logs.length;
+return(u,l.creator,l.layertype,l.layer,l.action,l.blocknumber);
 }
 
 
