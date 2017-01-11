@@ -4,9 +4,13 @@ contract LayerPlaceholder{function createLayerPlaceHolder(address c,uint type,ui
 contract Dapp{address public owner;}
 
 contract AlphaLayer{
+
+//the placeholder contract created for each newly created layer (so we can later Agument the Layer itself with informations!)
 LayerPlaceholder placeholder;
-//standard for all Alpha Layer enabled Dapps
+
+
 //if your contract contains this variable, the owner can control the related informations on the Alpha Layer
+//standard for all Alpha Layer enabled Dapps (always put this variable in your contract if you want to associate public informations to it, using Alpha Layer!)
 address public owner;
 
 //an external interface we can substitute in the future, allowed to create new sub-layers
@@ -17,6 +21,7 @@ uint public records;
 
 //used to point to external dapps/contracts (in order to find dapp owner, and to check if you have the permission to write on that location in behalf of the dapp)
 Dapp dapp;
+
 
 mapping(uint => mapping(uint => address))layers;
 mapping(address => mapping(uint => uint))address2layers;
@@ -90,8 +95,6 @@ owner=msg.sender;
 records=0;
 controller=control;
 logs.push(log(msg.sender,"Deployment",0,"Created AlphaLayer 1.0",block.number));
-//not strictly necessary
-//init();
 }
 
 //creation of new layers
@@ -99,11 +102,57 @@ logs.push(log(msg.sender,"Deployment",0,"Created AlphaLayer 1.0",block.number));
 function setLabel(uint labeltype,uint labelindex,string label,address creator,bool exposed,bool owned)returns(bool){
 if((msg.sender!=owner)&&(msg.sender!=controller))throw;
 if(labelindex==0)throw;
-if(labeltype==100)if(!stringtaken[labelindex]){logs.push(log(creator,"string",labelindex,label,block.number));layers[1][labelindex]=placeholder.createLayerPlaceHolder(creator);address2layers[layers[1][labelindex]][1]=labelindex;stringLabels[labelindex]=label;stringLayerCreator[labelindex]=creator;stringtaken[labelindex]=true;if(exposed)stringexposed.push(labelindex);stringowned[labelindex]=true;}
-if(labeltype==101)if(!uinttaken[labelindex]){logs.push(log(creator,"uint",labelindex,label,block.number));layers[2][labelindex]=placeholder.createLayerPlaceHolder(creator);address2layers[layers[2][labelindex]][2]=labelindex;uintLabels[labelindex]=label;uintLayerCreator[labelindex]=creator;uinttaken[labelindex]=true;if(exposed)uintexposed.push(labelindex);uintowned[labelindex]=true;}
-if(labeltype==102)if(!booltaken[labelindex]){logs.push(log(creator,"bool",labelindex,label,block.number));layers[3][labelindex]=placeholder.createLayerPlaceHolder(creator);address2layers[layers[3][labelindex]][3]=labelindex;boolLabels[labelindex]=label;boolLayerCreator[labelindex]=creator;booltaken[labelindex]=true;if(exposed)boolexposed.push(labelindex);boolowned[labelindex]=true;}
-if(labeltype==103)if(!addresstaken[labelindex]){logs.push(log(creator,"address",labelindex,label,block.number));layers[4][labelindex]=placeholder.createLayerPlaceHolder(creator);address2layers[layers[4][labelindex]][4]=labelindex;addressLabels[labelindex]=label;addressLayerCreator[labelindex]=creator;addresstaken[labelindex]=true;if(exposed)addressexposed.push(labelindex);addressowned[labelindex]=true;}
-if(labeltype==104)if(!bytetaken[labelindex]){logs.push(log(creator,"bytes",labelindex,label,block.number));layers[5][labelindex]=placeholder.createLayerPlaceHolder(creator);address2layers[layers[5][labelindex]][5]=labelindex;byteLabels[labelindex]=label;byteLayerCreator[labelindex]=creator;bytetaken[labelindex]=true;if(exposed)byteexposed.push(labelindex);byteowned[labelindex]=true;}
+
+if(labeltype==100)if(!stringtaken[labelindex]){
+   logs.push(log(creator,"string",labelindex,label,block.number));
+   layers[1][labelindex]=placeholder.createLayerPlaceHolder(creator);
+   address2layers[layers[1][labelindex]][1]=labelindex;
+   stringLabels[labelindex]=label;
+   stringLayerCreator[labelindex]=creator;
+   stringtaken[labelindex]=true;
+   if(exposed)stringexposed.push(labelindex);
+   stringowned[labelindex]=true;
+}
+if(labeltype==101)if(!uinttaken[labelindex]){
+   logs.push(log(creator,"uint",labelindex,label,block.number));
+   layers[2][labelindex]=placeholder.createLayerPlaceHolder(creator);
+   address2layers[layers[2][labelindex]][2]=labelindex;
+   uintLabels[labelindex]=label;
+   uintLayerCreator[labelindex]=creator;
+   uinttaken[labelindex]=true;
+   if(exposed)uintexposed.push(labelindex);
+   uintowned[labelindex]=true;
+}
+if(labeltype==102)if(!booltaken[labelindex]){
+   logs.push(log(creator,"bool",labelindex,label,block.number));
+   layers[3][labelindex]=placeholder.createLayerPlaceHolder(creator);
+   address2layers[layers[3][labelindex]][3]=labelindex;
+   boolLabels[labelindex]=label;
+   boolLayerCreator[labelindex]=creator;
+   booltaken[labelindex]=true;
+   if(exposed)boolexposed.push(labelindex);
+   boolowned[labelindex]=true;
+}
+if(labeltype==103)if(!addresstaken[labelindex]){
+   logs.push(log(creator,"address",labelindex,label,block.number));
+   layers[4][labelindex]=placeholder.createLayerPlaceHolder(creator);
+   address2layers[layers[4][labelindex]][4]=labelindex;
+   addressLabels[labelindex]=label;
+   addressLayerCreator[labelindex]=creator;
+   addresstaken[labelindex]=true;
+   if(exposed)addressexposed.push(labelindex);
+   addressowned[labelindex]=true;
+}
+if(labeltype==104)if(!bytetaken[labelindex]){
+   logs.push(log(creator,"bytes",labelindex,label,block.number));
+   layers[5][labelindex]=placeholder.createLayerPlaceHolder(creator);
+   address2layers[layers[5][labelindex]][5]=labelindex;
+   byteLabels[labelindex]=label;
+   byteLayerCreator[labelindex]=creator;
+   bytetaken[labelindex]=true;
+   if(exposed)byteexposed.push(labelindex);
+   byteowned[labelindex]=true;
+}
 
 return true;
 }
@@ -232,6 +281,8 @@ return true;
 //READ FUNCTIONS
 
 
+//some layers are exposed and visible and can be listed
+
 function exposed(uint t,uint u)constant returns(uint,uint){
 uint uu;uint ll;
 if(t==1){uu=stringexposed[u];ll=stringexposed.length;}
@@ -241,6 +292,8 @@ if(t==4){uu=uintexposed[u];ll=uintexposed.length;}
 if(t==5){uu=byteexposed[u];ll=byteexposed.length;}
 return(uu,ll);
 }
+
+//read Layers
 
 
 function readString(address addr,uint index)constant returns (string,string,address,address,bool){
