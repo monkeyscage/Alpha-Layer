@@ -219,7 +219,7 @@ if((!stringowned[index])&&(msg.sender!=addr)&&(msg.sender!=dapp.owner())&&(msg.s
 socialString[addr][index]=info;
 }else{
 if(msg.sender!=stringLayerCreator[index])throw;
-socialString[stringLayerCreator[index]][index]=info;
+socialString[addr][index]=info;
 }
 records++;
 return true;
@@ -232,7 +232,7 @@ if((msg.sender!=addr)&&(msg.sender!=dapp.owner())&&(msg.sender!=controller)&&(!a
 socialUint[addr][index]=quant;
 }else{
 if(msg.sender!=uintLayerCreator[index])throw;
-socialUint[uintLayerCreator[index]][index]=quant;
+socialUint[addr][index]=quant;
 }
 records++;
 return true;
@@ -245,7 +245,7 @@ if((!stringowned[index])&&(msg.sender!=addr)&&(msg.sender!=dapp.owner())&&(msg.s
 socialBool[addr][index]=check;
 }else{
 if(msg.sender!=boolLayerCreator[index])throw;
-socialBool[boolLayerCreator[index]][index]=quant;
+socialBool[addr][index]=quant;
 }
 records++;
 return true;
@@ -258,7 +258,7 @@ if((!stringowned[index])&&(msg.sender!=addr)&&(msg.sender!=dapp.owner())&&(msg.s
 socialAddress[addr][index]=addr2;
 }else{
 if(msg.sender!=addressLayerCreator[index])throw;
-socialAddress[addressLayerCreator[index]][index]=quant;
+socialAddress[addr][index]=quant;
 }
 records++;
 return true;
@@ -271,7 +271,7 @@ if((!stringowned[index])&&(msg.sender!=addr)&&(msg.sender!=dapp.owner())&&(msg.s
 socialByte[addr][index]=info;
 }else{
 if(msg.sender!=byteLayerCreator[index])throw;
-socialByte[byteLayerCreator[index]][index]=quant;
+socialByte[addr][index]=quant;
 }
 records++;
 return true;
