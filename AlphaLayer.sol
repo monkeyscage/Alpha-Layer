@@ -212,43 +212,54 @@ return true;
 
 //WRITE FUNCTIONS
 
+
 function addString(address d,address addr,uint index,string info) returns(bool){
-if(!stringowned[index]){
-dapp=Dapp(d);
-if((msg.sender!=addr)&&(msg.sender!=dapp.owner())&&(msg.sender!=controller)&&(!allowed[1][addr][msg.sender][index]))throw;
-socialString[addr][index]=info;
-}else{
-if(msg.sender!=stringLayerCreator[index])throw;
-socialString[addr][index]=info;
-}
-records++;
-return true;
+   if(!stringowned[index]){
+      if((msg.sender==addr)||(allowed[1][addr][msg.sender][index])||(msg.sender==controller)){
+         socialString[addr][index]=info;
+      }else{
+         dapp=Dapp(addr);
+         if(msg.sender==dapp.owner())socialString[addr][index]=info;
+      }
+   }else{
+      if(msg.sender!=stringLayerCreator[index])throw;
+      socialString[addr][index]=info;
+   }
+   records++;
+   return true;
 }
 
+
 function addUint(address d,address addr,uint index,uint quant) returns(bool){
-if(!uintowned[index]){
-dapp=Dapp(d);
-if((msg.sender!=addr)&&(msg.sender!=dapp.owner())&&(msg.sender!=controller)&&(!allowed[2][addr][msg.sender][index]))throw;
-socialUint[addr][index]=quant;
-}else{
-if(msg.sender!=uintLayerCreator[index])throw;
-socialUint[addr][index]=quant;
-}
-records++;
-return true;
+   if(!uintowned[index]){
+      if((msg.sender==addr)||(allowed[2][addr][msg.sender][index])||(msg.sender==controller)){
+         socialUint[addr][index]=quant;
+      }else{
+         dapp=Dapp(addr);
+         if(msg.sender==dapp.owner())socialUint[addr][index]=quant;
+      }
+   }else{
+      if(msg.sender!=uintLayerCreator[index])throw;
+      socialUint[addr][index]=quant;
+   }
+   records++;
+   return true;
 }
 
 function addBool(address d,address addr,uint index,bool check) returns(bool){
-if(!boolowned[index]){
-dapp=Dapp(d);
-if((msg.sender!=addr)&&(msg.sender!=dapp.owner())&&(msg.sender!=controller)&&(!allowed[3][addr][msg.sender][index]))throw;
-socialBool[addr][index]=check;
-}else{
-if(msg.sender!=boolLayerCreator[index])throw;
-socialBool[addr][index]=quant;
-}
-records++;
-return true;
+   if(!boolowned[index]){
+      if((msg.sender==addr)||(allowed[3][addr][msg.sender][index])||(msg.sender==controller)){
+         socialBool[addr][index]=check;
+      }else{
+         dapp=Dapp(addr);
+         if(msg.sender==dapp.owner())socialBool[addr][index]=check;
+      }
+   }else{
+      if(msg.sender!=boolLayerCreator[index])throw;
+      socialBool[addr][index]=check;
+   }
+   records++;
+   return true;
 }
 
 
