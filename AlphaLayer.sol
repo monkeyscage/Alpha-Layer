@@ -5,10 +5,6 @@ contract Dapp{address public owner;}
 
 contract AlphaLayer{
 
-//the placeholder contract created for each newly created layer (so we can later Agument the Layer itself with informations!)
-
-
-
 //if your contract contains this variable, the owner can control the related informations on the Alpha Layer
 //standard for all Alpha Layer enabled Dapps (always put this variable in your contract if you want to associate public informations to it, using Alpha Layer!)
 address public owner;
@@ -25,6 +21,7 @@ Dapp dapp;
 
 mapping(uint => mapping(uint => address))layers;
 mapping(address => mapping(uint => uint))address2layers;
+mapping(address => mapping(uint => uint[]))createdLayers;
 
 //the container for labels
 //the labels for "the container for labels"
@@ -74,6 +71,7 @@ mapping(uint => mapping(uint => bool))taken;
 //some layers are exposed and indexed, the others are "inner functional layers" used by dapps for internal procedures
 mapping(uint => uint[])exposed;
 
+//some layers are private, created by dapps, and rewriteable only by the creator
 mapping(uint => mapping(uint => bool))owned;
 
 
@@ -157,10 +155,6 @@ owner=o;}
 if(u==98){
 logs.push(log(o,"setController()",0,"",block.number));
 controller=o;}
-if(u==99){
-logs.push(log(o,"setPlaceHolder()",0,"",block.number));
-//placeholder=LayerPlaceHolder(o);  
-}
 if(u<=6){
 logs.push(log(o,g,u,"exposed",block.number));
 if(!exposed){exposed[g][u]=0;}else{exposed[g].push(u);}}
@@ -318,8 +312,12 @@ allowed[group][msg.sender][a][u]=false;
 return true;
 }
 
-function readPermissions(uint group,address a,address d,uint u)constant returns (address,uint,uint,uint,bool){
+function readPermissions(uint group,address a,address d,uint u)constant returns (address,uint,uint,uint,bool,uint,uint){
 return (permissions[a][u],permissions[a].length,permissionsTarget[group][a][d][u],permissionsTarget[group][a][d].length,allowed[group][a][d][u]);
+}
+
+function createdLayers(uint group,address a,uint u)constant returns (uint,uint){
+return (createdLayers[a][group].length,createdLayers[a][group][u]);
 }
 
 
