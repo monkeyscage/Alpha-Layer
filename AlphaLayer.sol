@@ -1,6 +1,6 @@
 pragma solidity ^0.4.6;
 
-contract LayerPlaceholder{function createLayerPlaceHolder(address c,uint type,uint layer)public returns(address){}}
+contract LayerPlaceholder{address public owner;uint public type; uint public index; function LayerPlaceHolder(address creator,uint layerype,uint layer)public returns(bool){owner=creator;type=layertype;index=layer;}}
 contract Dapp{address public owner;}
 
 contract AlphaLayer{
@@ -105,7 +105,7 @@ if(labelindex==0)throw;
 
 if(labeltype==100)if(!stringtaken[labelindex]){
    logs.push(log(creator,"string",labelindex,label,block.number));
-   layers[1][labelindex]=placeholder.createLayerPlaceHolder(creator);
+   layers[1][labelindex]=new LayerPlaceHolder(creator,1,labelindex);
    address2layers[layers[1][labelindex]][1]=labelindex;
    stringLabels[labelindex]=label;
    stringLayerCreator[labelindex]=creator;
@@ -115,7 +115,7 @@ if(labeltype==100)if(!stringtaken[labelindex]){
 }
 if(labeltype==101)if(!uinttaken[labelindex]){
    logs.push(log(creator,"uint",labelindex,label,block.number));
-   layers[2][labelindex]=placeholder.createLayerPlaceHolder(creator);
+   layers[2][labelindex]=new LayerPlaceHolder(creator,2,labelindex);
    address2layers[layers[2][labelindex]][2]=labelindex;
    uintLabels[labelindex]=label;
    uintLayerCreator[labelindex]=creator;
@@ -125,7 +125,7 @@ if(labeltype==101)if(!uinttaken[labelindex]){
 }
 if(labeltype==102)if(!booltaken[labelindex]){
    logs.push(log(creator,"bool",labelindex,label,block.number));
-   layers[3][labelindex]=placeholder.createLayerPlaceHolder(creator);
+   layers[3][labelindex]=new LayerPlaceHolder(creator,3,labelindex);
    address2layers[layers[3][labelindex]][3]=labelindex;
    boolLabels[labelindex]=label;
    boolLayerCreator[labelindex]=creator;
@@ -135,7 +135,7 @@ if(labeltype==102)if(!booltaken[labelindex]){
 }
 if(labeltype==103)if(!addresstaken[labelindex]){
    logs.push(log(creator,"address",labelindex,label,block.number));
-   layers[4][labelindex]=placeholder.createLayerPlaceHolder(creator);
+   layers[4][labelindex]=new LayerPlaceHolder(creator,4,labelindex);
    address2layers[layers[4][labelindex]][4]=labelindex;
    addressLabels[labelindex]=label;
    addressLayerCreator[labelindex]=creator;
@@ -145,7 +145,7 @@ if(labeltype==103)if(!addresstaken[labelindex]){
 }
 if(labeltype==104)if(!bytetaken[labelindex]){
    logs.push(log(creator,"bytes",labelindex,label,block.number));
-   layers[5][labelindex]=placeholder.createLayerPlaceHolder(creator);
+   layers[5][labelindex]=new LayerPlaceHolder(creator,5,labelindex);
    address2layers[layers[5][labelindex]][5]=labelindex;
    byteLabels[labelindex]=label;
    byteLayerCreator[labelindex]=creator;
