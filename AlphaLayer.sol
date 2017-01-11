@@ -118,6 +118,7 @@ if(labeltype==5){
    taken[labeltype][labelindex]=true;
    if(exp)exposed[labeltype].push(labelindex);
    owned[labeltype][labelindex]=true;
+   createdLayer[creator][labeltype].push(labelindex);
  }
 
 return true;
