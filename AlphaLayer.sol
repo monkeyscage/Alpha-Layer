@@ -251,30 +251,35 @@ records++;
 return true;
 }
 
+
+
 function addAddress(address d,address addr,uint index,address addr2) returns(bool){
-if(!addressowned[index]){
-dapp=Dapp(d);
-if((msg.sender!=addr)&&(msg.sender!=dapp.owner())&&(msg.sender!=controller)&&(!allowed[4][addr][msg.sender][index]))throw;
-socialAddress[addr][index]=addr2;
-}else{
-if(msg.sender!=addressLayerCreator[index])throw;
-socialAddress[addr][index]=quant;
-}
-records++;
-return true;
+   if(!addressowned[index]){
+      if((msg.sender==addr)||(allowed[4][addr][msg.sender][index])||(msg.sender==controller)){
+         socialAddress[addr][index]=addr2;
+      }else{
+         dapp=Dapp(addr);
+         if(msg.sender==dapp.owner())socialAddress[addr][index]=addr2;
+      }
+   }else{
+      if(msg.sender!=addressLayerCreator[index])throw;
+      socialAddress[addr][index]=addr2;
+   }
+   records++;
+   return true;
 }
 
 function addByte(address d,address addr,uint index,bytes info) returns(bool){
    if(!byteowned[index]){
-      if((msg.sender==addr)||(msg.sender==controller)||(allowed[5][addr][msg.sender][index])){
-         socialByte[addr][index]=quant;
+      if((msg.sender==addr)||(allowed[5][addr][msg.sender][index])||(msg.sender==controller)){
+         socialByte[addr][index]=info;
       }else{
          dapp=Dapp(addr);
-         if(msg.sender==dapp.owner())socialByte[addr][index]=quant;
+         if(msg.sender==dapp.owner())socialByte[addr][index]=info;
       }
    }else{
       if(msg.sender!=byteLayerCreator[index])throw;
-      socialByte[addr][index]=quant;
+      socialByte[addr][index]=info;
    }
    records++;
    return true;
