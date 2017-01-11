@@ -20,7 +20,7 @@ Dapp dapp;
 
 
 mapping(uint => mapping(uint => address))layers;
-mapping(address => mapping(uint => uint))address2layers;
+mapping(address => mapping(uint => uint))address2index;
 mapping(address => mapping(uint => uint[]))createdLayers;
 
 //the container for labels
@@ -114,7 +114,7 @@ if(labeltype==5){
 
    logs.push(log(creator,labeltype,labelindex,label,block.number));
    layers[labeltype][labelindex]=new LayerPlaceHolder(creator,labeltype,labelindex);
-   address2layers[layers[labeltype][labelindex]][labeltype]=labelindex;
+   address2index[layers[labeltype][labelindex]][labeltype]=labelindex;
    taken[labeltype][labelindex]=true;
    if(exp)exposed[labeltype].push(labelindex);
    owned[labeltype][labelindex]=true;
@@ -254,10 +254,10 @@ function addByte(address d,address addr,uint index,bytes info) returns(bool){
 
 //some layers are exposed and visible and can be listed
 
-function exposedLayers(uint g,uint u)constant returns(uint,uint){
+function exposedLayers(uint g,uint u,address a)constant returns(uint,uint,address,uint){
 uint uu;uint ll;
 uu=exposed[g][u];ll=exposed[g].length;
-return(uu,ll);
+return(uu,ll,layers[g][u],address2index[a][g]);
 }
 
 //read Layers
