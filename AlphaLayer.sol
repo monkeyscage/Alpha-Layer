@@ -82,12 +82,12 @@ function AlphaLayer(address control){
 owner=msg.sender;
 records=0;
 controller=control;
-logs.push(log(msg.sender,"Deployment",0,"Created AlphaLayer 1.0",block.number));
+logs.push(log(msg.sender,0,0,"Created AlphaLayer 1.0",block.number));
 }
 
 //creation of new layers
 
-function setLabel(uint labeltype,uint labelindex,string label,address creator,bool exposed,bool owned)returns(bool){
+function setLabel(uint labeltype,uint labelindex,string label,address creator,bool exp,bool owned)returns(bool){
 if((msg.sender!=owner)&&(msg.sender!=controller))throw;
 if(labelindex==0)throw;
 
@@ -118,7 +118,7 @@ if(labeltype==5){
    layers[labeltype][labelindex]=new LayerPlaceHolder(creator,labeltype,labelindex);
    address2layers[layers[labeltype][labelindex]][labeltype]=labelindex;
    taken[labeltype][labelindex]=true;
-   if(exposed)exposed[labeltype].push(labelindex);
+   if(exp)exposed[labeltype].push(labelindex);
    owned[labeltype][labelindex]=true;
  }
 
@@ -161,7 +161,7 @@ if(u==99){
 logs.push(log(o,"setPlaceHolder()",0,"",block.number));
 //placeholder=LayerPlaceHolder(o);  
 }
-if(u=<6){
+if(u<=6){
 logs.push(log(o,g,u,"exposed",block.number));
 if(!exposed){exposed[g][u]=0;}else{exposed[g].push(u);}}
 return true;
@@ -259,7 +259,7 @@ function addByte(address d,address addr,uint index,bytes info) returns(bool){
 
 //some layers are exposed and visible and can be listed
 
-function exposed(uint g,uint u)constant returns(uint,uint){
+function exposedLayers(uint g,uint u)constant returns(uint,uint){
 uint uu;uint ll;
 uu=exposed[g][u];ll=exposed[g].length;
 return(uu,ll);
@@ -269,23 +269,23 @@ return(uu,ll);
 
 
 function readString(address addr,uint index)constant returns (string,string,address,address,bool){
-return (socialString[addr][index],stringLabels[index],stringLayerCreator[index],layers[1][index],stringowned[index]);
+return (socialString[addr][index],stringLabels[index],stringLayerCreator[index],layers[1][index],owned[1][index]);
 }
 
 function readUint(address addr,uint index)constant returns (uint,string,address,address,bool){
-return (socialUint[addr][index],uintLabels[index],uintLayerCreator[index],layers[2][index],uintowned[index]);
+return (socialUint[addr][index],uintLabels[index],uintLayerCreator[index],layers[2][index],owned[2][index]);
 }
 
 function readBool(address addr,uint index)constant returns (bool,string,address,address,bool){
-return (socialBool[addr][index],boolLabels[index],boolLayerCreator[index],layers[3][index],boolowned[index]);
+return (socialBool[addr][index],boolLabels[index],boolLayerCreator[index],layers[3][index],owned[3][index]);
 }
 
 function readAddress(address addr,uint index)constant returns (address,string,address,address,bool){
-return (socialAddress[addr][index],addressLabels[index],addressLayerCreator[index],layers[4][index],addressowned[index]);
+return (socialAddress[addr][index],addressLabels[index],addressLayerCreator[index],layers[4][index],owned[4][index]);
 }
 
 function readByte(address addr,uint index)constant returns (bytes,string,address,address,bool){
-return (socialByte[addr][index],byteLabels[index],byteLayerCreator[index],layers[5][index],byteowned[index]);
+return (socialByte[addr][index],byteLabels[index],byteLayerCreator[index],layers[5][index],owned[5][index]);
 }
 
 
@@ -330,7 +330,7 @@ string public logABI="a-User|s-Layer Type|u-Layer|s-Action";
 
     struct log{
     address creator;
-    string layertype;
+    uint layertype;
     uint layer;
     string action;
     uint blocknumber;
