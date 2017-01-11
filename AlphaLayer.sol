@@ -69,24 +69,12 @@ mapping(uint => mapping(address => mapping(address => uint[])))permissionsTarget
 mapping(uint => mapping(address => mapping(address => mapping(uint => bool))))allowed;
 
 //once a layer is created it is also locked, no one can take it or overwrite its label
-mapping(uint => bool)stringtaken;
-mapping(uint => bool)addresstaken;
-mapping(uint => bool)booltaken;
-mapping(uint => bool)uinttaken;
-mapping(uint => bool)bytetaken;
+mapping(uint => mapping(uint => bool))taken;
 
 //some layers are exposed and indexed, the others are "inner functional layers" used by dapps for internal procedures
-uint[] stringexposed;
-uint[] addressexposed;
-uint[] boolexposed;
-uint[] uintexposed;
-uint[] byteexposed;
+mapping(uint => uint[])exposed;
 
-mapping(uint => bool)stringowned;
-mapping(uint => bool)addressowned;
-mapping(uint => bool)boolowned;
-mapping(uint => bool)uintowned;
-mapping(uint => bool)byteowned;
+mapping(uint => mapping(uint => bool))owned;
 
 
 
@@ -103,56 +91,36 @@ function setLabel(uint labeltype,uint labelindex,string label,address creator,bo
 if((msg.sender!=owner)&&(msg.sender!=controller))throw;
 if(labelindex==0)throw;
 
-if(labeltype==100)if(!stringtaken[labelindex]){
-   logs.push(log(creator,"string",labelindex,label,block.number));
-   layers[1][labelindex]=new LayerPlaceHolder(creator,1,labelindex);
-   address2layers[layers[1][labelindex]][1]=labelindex;
+if(!taken[labeltype][labelindex]){
+
+if(labeltype==1){
    stringLabels[labelindex]=label;
    stringLayerCreator[labelindex]=creator;
-   stringtaken[labelindex]=true;
-   if(exposed)stringexposed.push(labelindex);
-   stringowned[labelindex]=true;
 }
-if(labeltype==101)if(!uinttaken[labelindex]){
-   logs.push(log(creator,"uint",labelindex,label,block.number));
-   layers[2][labelindex]=new LayerPlaceHolder(creator,2,labelindex);
-   address2layers[layers[2][labelindex]][2]=labelindex;
+if(labeltype==2){
    uintLabels[labelindex]=label;
    uintLayerCreator[labelindex]=creator;
-   uinttaken[labelindex]=true;
-   if(exposed)uintexposed.push(labelindex);
-   uintowned[labelindex]=true;
 }
-if(labeltype==102)if(!booltaken[labelindex]){
-   logs.push(log(creator,"bool",labelindex,label,block.number));
-   layers[3][labelindex]=new LayerPlaceHolder(creator,3,labelindex);
-   address2layers[layers[3][labelindex]][3]=labelindex;
+if(labeltype==3){
    boolLabels[labelindex]=label;
    boolLayerCreator[labelindex]=creator;
-   booltaken[labelindex]=true;
-   if(exposed)boolexposed.push(labelindex);
-   boolowned[labelindex]=true;
 }
-if(labeltype==103)if(!addresstaken[labelindex]){
-   logs.push(log(creator,"address",labelindex,label,block.number));
-   layers[4][labelindex]=new LayerPlaceHolder(creator,4,labelindex);
-   address2layers[layers[4][labelindex]][4]=labelindex;
+if(labeltype==4){
    addressLabels[labelindex]=label;
    addressLayerCreator[labelindex]=creator;
-   addresstaken[labelindex]=true;
-   if(exposed)addressexposed.push(labelindex);
-   addressowned[labelindex]=true;
 }
-if(labeltype==104)if(!bytetaken[labelindex]){
-   logs.push(log(creator,"bytes",labelindex,label,block.number));
-   layers[5][labelindex]=new LayerPlaceHolder(creator,5,labelindex);
-   address2layers[layers[5][labelindex]][5]=labelindex;
+if(labeltype==5){
    byteLabels[labelindex]=label;
    byteLayerCreator[labelindex]=creator;
-   bytetaken[labelindex]=true;
-   if(exposed)byteexposed.push(labelindex);
-   byteowned[labelindex]=true;
 }
+
+   logs.push(log(creator,labeltype,labelindex,label,block.number));
+   layers[labeltype][labelindex]=new LayerPlaceHolder(creator,labeltype,labelindex);
+   address2layers[layers[labeltype][labelindex]][labeltype]=labelindex;
+   taken[labeltype][labelindex]=true;
+   if(exposed)exposed[labeltype].push(labelindex);
+   owned[labeltype][labelindex]=true;
+ }
 
 return true;
 }
