@@ -149,7 +149,7 @@ setLabel(100,16,"Facebook",this,true,false);
 setLabel(100,17,"Google",this,true,false);
 }
 
-function manager(address o,uint u,bool exposed)returns(bool){
+function manager(address o,uint g,uint u,bool exposed)returns(bool){
 if(msg.sender!=owner)throw;
 if(u==97){
 logs.push(log(o,"setOwner()",0,"",block.number));
@@ -159,24 +159,11 @@ logs.push(log(o,"setController()",0,"",block.number));
 controller=o;}
 if(u==99){
 logs.push(log(o,"setPlaceHolder()",0,"",block.number));
-//placeholder=LayerPlaceHolder(o);
-    
+//placeholder=LayerPlaceHolder(o);  
 }
-if(u==100){
-logs.push(log(o,"censored",u,"string Layer",block.number));
-if(!exposed){stringexposed[u]=0;}else{stringexposed.push(u);}}
-if(u==101){
-logs.push(log(o,"censored",u,"uint Layer",block.number));
-if(!exposed){uintexposed[u]=0;}else{uintexposed.push(u);}}
-if(u==102){
-logs.push(log(o,"censored",u,"bool Layer",block.number));
-if(!exposed){boolexposed[u]=0;}else{boolexposed.push(u);}}
-if(u==103){
-logs.push(log(o,"censored",u,"address Layer",block.number));
-if(!exposed){addressexposed[u]=0;}else{addressexposed.push(u);}}
-if(u==104){
-logs.push(log(o,"censored",u,"byte Layer",block.number));
-if(!exposed){byteexposed[u]=0;}else{byteexposed.push(u);}}
+if(u=<6){
+logs.push(log(o,g,u,"exposed",block.number));
+if(!exposed){exposed[g][u]=0;}else{exposed[g].push(u);}}
 return true;
 }
 
