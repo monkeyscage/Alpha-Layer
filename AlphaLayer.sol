@@ -59,20 +59,20 @@ logs.push(log(msg.sender,0,0,"Created AlphaLayer 1.0",block.number));
 
 //creation of new layers
 
-function setLabel(uint labeltype,uint labelindex,string lab,address creator,bool exp,bool own)returns(bool){
+function createLayer(uint group,uint layer,string lab,address creator,bool exp,bool own)returns(bool){
 if((msg.sender!=owner)&&(msg.sender!=controller))throw;
-if(labelindex==0)throw;
+if(layer==0)throw;
 
-if(!taken[labeltype][labelindex]){
-   label[labeltype][labelindex]=lab;
-   layerCreator[labeltype][labelindex]=creator;
-   logs.push(log(creator,labeltype,labelindex,label,block.number));
-   layers[labeltype][labelindex]=new LayerPlaceHolder(creator,labeltype,labelindex);
-   address2index[layers[labeltype][labelindex]][labeltype]=labelindex;
-   taken[labeltype][labelindex]=true;
-   if(exp)exposed[labeltype].push(labelindex);
-   owned[labeltype][labelindex]=own;
-   createdLayers[creator][labeltype].push(labelindex);
+if(!taken[group][layer]){
+   label[group][layer]=lab;
+   layerCreator[group][layer]=creator;
+   logs.push(log(creator,group,layer,label,block.number));
+   layers[group][layer]=new LayerPlaceHolder(creator,group,layer);
+   address2index[layers[group][layer]][group]=layer;
+   taken[group][layer]=true;
+   if(exp)exposed[group].push(layer);
+   owned[group][layer]=own;
+   createdLayers[creator][group].push(layer);
  }
 
 return true;
