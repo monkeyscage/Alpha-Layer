@@ -223,8 +223,8 @@ return(exposed[groupORindex][layerIndex],exposed[groupORindex].length);
 
 //get layer
 
-function layerInfo(uint groupORindex,uint layerIndex,address addr)constant returns(address,address,string,uint,bool){
-return(layers[groupORindex][layerIndex],layerCreator[groupORindex][layerIndex],label[groupORindex][layerIndex],address2index[addr][groupORindex],owned[groupORindex][layerIndex]);
+function layerInfo(uint groupORindex,uint layerIndex,address addr)constant returns(address,address,string,bool,uint){
+return(layers[groupORindex][layerIndex],layerCreator[groupORindex][layerIndex],label[groupORindex][layerIndex],owned[groupORindex][layerIndex],address2index[addr][groupORindex]);
 }
 
 //list layers created by someone
