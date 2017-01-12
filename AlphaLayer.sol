@@ -98,7 +98,7 @@ function init(){
 createLayer(100,1,"name",this,true,false);
 createLayer(100,2,"address",this,true,false);
 createLayer(100,3,"email",this,true,false);
-createLayer(100,4,"disclaimer",this,true,false);
+createLayer(100,4,"description",this,true,false);
 createLayer(100,5,"logo512*512",this,true,false);
 createLayer(100,6,"logo256*256",this,true,false);
 createLayer(100,7,"logo128*128",this,true,false);
