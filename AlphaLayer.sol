@@ -18,45 +18,20 @@ uint public records;
 //used to point to external dapps/contracts (in order to find dapp owner, and to check if you have the permission to write on that location in behalf of the dapp)
 Dapp dapp;
 
+uint TEXT=1;
+uint INTEGER=2;
+uint BOOLEAN=3;
+uint HASH=4;
+uint BYTEx=5;
 
 mapping(uint => mapping(uint => address))layers;
 mapping(address => mapping(uint => uint))address2index;
 mapping(address => mapping(uint => uint[]))createdLayers;
 
-//the container for labels
-//the labels for "the container for labels"
-//the creator of that layer
-mapping(address => mapping(uint => string))socialString;
-mapping(uint => string)stringLabels;
-mapping(uint => address)stringLayerCreator;
+mapping(uint => mapping(address => mapping(uint => string))item;
+mapping(uint => mapping(uint => string)label;
+mapping(uint => mapping(uint => address)layerCreator;
 
-//the container for numbers
-//the labels for "the container for numbers"
-//the creator of that layer
-mapping(address => mapping(uint => uint))socialUint; 
-mapping(uint => string)uintLabels;
-mapping(uint => address)uintLayerCreator;
-
-//the container for true/false
-//the labels for "the container for true/false"
-//the creator of that layer
-mapping(address => mapping(uint => bool))socialBool;
-mapping(uint => string)boolLabels;
-mapping(uint => address)boolLayerCreator;
-
-//the container for addresses
-//the labels for "the container for addresses"
-//the creator of that layer
-mapping(address => mapping(uint => address))socialAddress;
-mapping(uint => string)addressLabels;
-mapping(uint => address)addressLayerCreator;
-
-//the container for bytes
-//the labels for "the container for bytes"
-//the creator of that layer
-mapping(address => mapping(uint => bytes))socialByte;
-mapping(uint => string)byteLabels;
-mapping(uint => address)byteLayerCreator;
 
 //personal container for permissioned dapps
 mapping(address => address[])permissions;
@@ -85,33 +60,15 @@ logs.push(log(msg.sender,0,0,"Created AlphaLayer 1.0",block.number));
 
 //creation of new layers
 
-function setLabel(uint labeltype,uint labelindex,string label,address creator,bool exp,bool own)returns(bool){
+function setLabel(uint labeltype,uint labelindex,string lab,address creator,bool exp,bool own)returns(bool){
 if((msg.sender!=owner)&&(msg.sender!=controller))throw;
 if(labelindex==0)throw;
 
 if(!taken[labeltype][labelindex]){
 
-if(labeltype==1){
-   stringLabels[labelindex]=label;
-   stringLayerCreator[labelindex]=creator;
-}
-if(labeltype==2){
-   uintLabels[labelindex]=label;
-   uintLayerCreator[labelindex]=creator;
-}
-if(labeltype==3){
-   boolLabels[labelindex]=label;
-   boolLayerCreator[labelindex]=creator;
-}
-if(labeltype==4){
-   addressLabels[labelindex]=label;
-   addressLayerCreator[labelindex]=creator;
-}
-if(labeltype==5){
-   byteLabels[labelindex]=label;
-   byteLayerCreator[labelindex]=creator;
-}
 
+   label[labeltype][labelindex]=lab;
+   layerCreator[labeltype][labelindex]=creator;
    logs.push(log(creator,labeltype,labelindex,label,block.number));
    layers[labeltype][labelindex]=new LayerPlaceHolder(creator,labeltype,labelindex);
    address2index[layers[labeltype][labelindex]][labeltype]=labelindex;
@@ -168,14 +125,14 @@ return true;
 function addString(address d,address addr,uint index,string info) returns(bool){
    if(!owned[1][index]){
       if((msg.sender==addr)||(allowed[1][addr][msg.sender][index])||(msg.sender==controller)){
-         socialString[addr][index]=info;
+         item[TEXT][addr][index]=info;
       }else{
          dapp=Dapp(addr);
-         if(msg.sender==dapp.owner())socialString[addr][index]=info;
+         if(msg.sender==dapp.owner())item[TEXT][addr][index]=info;
       }
    }else{
-      if(msg.sender!=stringLayerCreator[index])throw;
-      socialString[addr][index]=info;
+      if(msg.sender!=layerCreator[TEXT][index])throw;
+      item[TEXT][addr][index]=info;
    }
    records++;
    return true;
@@ -185,14 +142,14 @@ function addString(address d,address addr,uint index,string info) returns(bool){
 function addUint(address d,address addr,uint index,uint quant) returns(bool){
    if(!owned[2][index]){
       if((msg.sender==addr)||(allowed[2][addr][msg.sender][index])||(msg.sender==controller)){
-         socialUint[addr][index]=quant;
+         item[INTEGER][addr][index]=quant;
       }else{
          dapp=Dapp(addr);
-         if(msg.sender==dapp.owner())socialUint[addr][index]=quant;
+         if(msg.sender==dapp.owner())item[INTEGER][addr][index]=quant;
       }
    }else{
-      if(msg.sender!=uintLayerCreator[index])throw;
-      socialUint[addr][index]=quant;
+      if(msg.sender!=layerCreator[INTEGER][index])throw;
+      item[INTEGER][addr][index]=quant;
    }
    records++;
    return true;
@@ -201,14 +158,14 @@ function addUint(address d,address addr,uint index,uint quant) returns(bool){
 function addBool(address d,address addr,uint index,bool check) returns(bool){
    if(!owned[3][index]){
       if((msg.sender==addr)||(allowed[3][addr][msg.sender][index])||(msg.sender==controller)){
-         socialBool[addr][index]=check;
+         item[BOOLEAN][addr][index]=check;
       }else{
          dapp=Dapp(addr);
-         if(msg.sender==dapp.owner())socialBool[addr][index]=check;
+         if(msg.sender==dapp.owner())item[BOOLEAN][addr][index]=check;
       }
    }else{
-      if(msg.sender!=boolLayerCreator[index])throw;
-      socialBool[addr][index]=check;
+      if(msg.sender!=layerCreator[BOOLEAN][index])throw;
+      item[BOOLEAN][addr][index]=check;
    }
    records++;
    return true;
@@ -219,14 +176,14 @@ function addBool(address d,address addr,uint index,bool check) returns(bool){
 function addAddress(address d,address addr,uint index,address addr2) returns(bool){
    if(!owned[4][index]){
       if((msg.sender==addr)||(allowed[4][addr][msg.sender][index])||(msg.sender==controller)){
-         socialAddress[addr][index]=addr2;
+         item[HASH][addr][index]=addr2;
       }else{
          dapp=Dapp(addr);
-         if(msg.sender==dapp.owner())socialAddress[addr][index]=addr2;
+         if(msg.sender==dapp.owner())item[HASH][addr][index]=addr2;
       }
    }else{
-      if(msg.sender!=addressLayerCreator[index])throw;
-      socialAddress[addr][index]=addr2;
+      if(msg.sender!=layerCreator[HASH][index])throw;
+      item[HASH][addr][index]=addr2;
    }
    records++;
    return true;
@@ -235,14 +192,14 @@ function addAddress(address d,address addr,uint index,address addr2) returns(boo
 function addByte(address d,address addr,uint index,bytes info) returns(bool){
    if(!owned[5][index]){
       if((msg.sender==addr)||(allowed[5][addr][msg.sender][index])||(msg.sender==controller)){
-         socialByte[addr][index]=info;
+         item[BYTEx][addr][index]=info;
       }else{
          dapp=Dapp(addr);
-         if(msg.sender==dapp.owner())socialByte[addr][index]=info;
+         if(msg.sender==dapp.owner())item[BYTEx][addr][index]=info;
       }
    }else{
-      if(msg.sender!=byteLayerCreator[index])throw;
-      socialByte[addr][index]=info;
+      if(msg.sender!=layerCreator[BYTEx][index])throw;
+      item[BYTEx][addr][index]=info;
    }
    records++;
    return true;
