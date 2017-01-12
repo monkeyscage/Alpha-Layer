@@ -66,27 +66,21 @@ controller=control;
 logs.push(log(msg.sender,0,0,"Created AlphaLayer 1.0",block.number));
 }
 
-//creation of new layers
+// set owner, controller and unexpose layer
 
-function createLayer(uint group,uint layer,string lab,address creator,bool exp,bool own)returns(bool){
+function manager(address o,uint g,uint u,bool exp)returns(bool){
 if((msg.sender!=owner)&&(msg.sender!=controller))throw;
-if(layer==0)throw;
-
-if(!taken[group][layer]){
-   label[group][layer]=lab;
-   layerCreator[group][layer]=creator;
-   logs.push(log(creator,group,layer,label,block.number));
-   layers[group][layer]=new LayerPlaceHolder(creator,group,layer);
-   address2index[layers[group][layer]][group]=layer;
-   taken[group][layer]=true;
-   if(exp)exposed[group].push(layer);
-   owned[group][layer]=own;
-   createdLayers[creator][group].push(layer);
- }
-
+if(u==97){
+logs.push(log(o,97,0,"",block.number));
+owner=o;}
+if(u==98){
+logs.push(log(o,98,0,"",block.number));
+controller=o;}
+if(u<=6){
+logs.push(log(o,g,u,"exposed",block.number));
+if(!exp){exposed[g][u]=0;}else{exposed[g].push(u);}}
 return true;
 }
-
 
 //just a bunch of basic layers to star from
 
@@ -111,19 +105,25 @@ setLabel(100,16,"Facebook",this,true,false);
 setLabel(100,17,"Google",this,true,false);
 }
 
-// set owner, controller and unexpose layer
 
-function manager(address o,uint g,uint u,bool exp)returns(bool){
+//creation of new layers
+
+function createLayer(uint group,uint layer,string lab,address creator,bool exp,bool own)returns(bool){
 if((msg.sender!=owner)&&(msg.sender!=controller))throw;
-if(u==97){
-logs.push(log(o,97,0,"",block.number));
-owner=o;}
-if(u==98){
-logs.push(log(o,98,0,"",block.number));
-controller=o;}
-if(u<=6){
-logs.push(log(o,g,u,"exposed",block.number));
-if(!exp){exposed[g][u]=0;}else{exposed[g].push(u);}}
+if(layer==0)throw;
+
+if(!taken[group][layer]){
+   label[group][layer]=lab;
+   layerCreator[group][layer]=creator;
+   logs.push(log(creator,group,layer,label,block.number));
+   layers[group][layer]=new LayerPlaceHolder(creator,group,layer);
+   address2index[layers[group][layer]][group]=layer;
+   taken[group][layer]=true;
+   if(exp)exposed[group].push(layer);
+   owned[group][layer]=own;
+   createdLayers[creator][group].push(layer);
+ }
+
 return true;
 }
 
