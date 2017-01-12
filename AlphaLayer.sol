@@ -300,12 +300,12 @@ if(b){
 return true;
 }
 
-function readPermissions(uint group,address a,address d,uint u)constant returns (address,uint,uint,uint,bool){
-return (permissions[a][u],permissions[a].length,permissionsTarget[group][a][d][u],permissionsTarget[group][a][d].length,allowed[group][a][d][u]);
+function readPermissions(uint group,address own,address control,uint layerIndex)constant returns (uint,address,uint,uint,bool){
+return (permissions[own].length,permissions[own][layerIndex],permissionsTarget[group][own][control].length,permissionsTarget[group][own][control][layerIndex],allowed[group][own][control][layerIndex]);
 }
 
-function created(uint group,address a,uint u)constant returns (uint,uint){
-return (createdLayers[a][group].length,createdLayers[a][group][u]);
+function created(uint group,address creator,uint layerIndex)constant returns (uint,uint){
+return (createdLayers[creator][group].length,createdLayers[creator][group][layerIndex]);
 }
 
 
