@@ -44,11 +44,11 @@ mapping(address => mapping(uint => address))addressitem;
 mapping(address => mapping(uint => bytes))bytesitem;
 
 //by group, by layer, the label
-mapping(uint => mapping(uint => string)label;
+mapping(uint => mapping(uint => string))label;
 
 
 //by group, by layer, the creator
-mapping(uint => mapping(uint => address)layerCreator;
+mapping(uint => mapping(uint => address))layerCreator;
 
 
 //personal container for permissioned dapps
@@ -95,23 +95,23 @@ return true;
 
 function init(){
 //the very basic layers needed so far
-setLabel(100,1,"name",this,true,false);
-setLabel(100,2,"address",this,true,false);
-setLabel(100,3,"email",this,true,false);
-setLabel(100,4,"disclaimer",this,true,false);
-setLabel(100,5,"logo512*512",this,true,false);
-setLabel(100,6,"logo256*256",this,true,false);
-setLabel(100,7,"logo128*128",this,true,false);
-setLabel(100,8,"logo64*64",this,true,false);
-setLabel(100,9,"logo32*32",this,true,false);
-setLabel(100,10,"logo16*16",this,true,false);
-setLabel(100,11,"owner",this,true,false);
-setLabel(100,12,"Github",this,true,false);
-setLabel(100,13,"Twitter Account",this,true,false);
-setLabel(100,14,"Twitter Widget",this,true,false);
-setLabel(100,15,"Twitter Widget@",this,true,false);
-setLabel(100,16,"Facebook",this,true,false);
-setLabel(100,17,"Google",this,true,false);
+createLayer(100,1,"name",this,true,false);
+createLayer(100,2,"address",this,true,false);
+createLayer(100,3,"email",this,true,false);
+createLayer(100,4,"disclaimer",this,true,false);
+createLayer(100,5,"logo512*512",this,true,false);
+createLayer(100,6,"logo256*256",this,true,false);
+createLayer(100,7,"logo128*128",this,true,false);
+createLayer(100,8,"logo64*64",this,true,false);
+createLayer(100,9,"logo32*32",this,true,false);
+createLayer(100,10,"logo16*16",this,true,false);
+createLayer(100,11,"owner",this,true,false);
+createLayer(100,12,"Github",this,true,false);
+createLayer(100,13,"Twitter Account",this,true,false);
+createLayer(100,14,"Twitter Widget",this,true,false);
+createLayer(100,15,"Twitter Widget@",this,true,false);
+createLayer(100,16,"Facebook",this,true,false);
+createLayer(100,17,"Google",this,true,false);
 }
 
 
@@ -124,7 +124,7 @@ if(layer==0)throw;
 if(!taken[group][layer]){
    label[group][layer]=lab;
    layerCreator[group][layer]=creator;
-   logs.push(log(creator,group,layer,label,block.number));
+   logs.push(log(creator,group,layer,lab,block.number));
    layers[group][layer]=new LayerPlaceHolder(creator,group,layer);
    address2index[layers[group][layer]][group]=layer;
    taken[group][layer]=true;
@@ -282,7 +282,7 @@ return (addressitem[addr][index],label[HASH][index],layerCreator[HASH][index],la
 }
 
 function readByte(address addr,uint index)constant returns (bytes,string,address,address,bool){
-return (bytes[addr][index],label[BYTEx][index],layerCreator[BYTEx][index],layers[5][index],owned[5][index]);
+return (bytesitem[addr][index],label[BYTEx][index],layerCreator[BYTEx][index],layers[5][index],owned[5][index]);
 }
 
 
