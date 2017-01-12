@@ -260,15 +260,15 @@ return (item[BYTEx][addr][index],label[BYTEx][index],layerCreator[BYTEx][index],
 
 //PERMISSIONS
 
-function allow(uint group,address a,uint u,bool b)returns (bool){
+function allow(uint group,address dapp,uint layer,bool b)returns (bool){
 if(b){
-   if(!allowed[group][msg.sender][a][u]){
-      permissions[msg.sender].push(a);
-      permissionsTarget[group][msg.sender][a].push(u);
-      allowed[group][msg.sender][a][u]=true;
+   if(!allowed[group][msg.sender][dapp][layer]){
+      permissions[msg.sender].push(dapp);
+      permissionsTarget[group][msg.sender][dapp].push(layer);
+      allowed[group][msg.sender][dapp][layer]=true;
    }
 }else{
-   allowed[group][msg.sender][a][u]=false;
+   allowed[group][msg.sender][dapp][layer]=false;
 }
 return true;
 }
