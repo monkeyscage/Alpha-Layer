@@ -102,8 +102,10 @@ setLabel(100,16,"Facebook",this,true,false);
 setLabel(100,17,"Google",this,true,false);
 }
 
+// set owner, controller and unexpose layer
+
 function manager(address o,uint g,uint u,bool exp)returns(bool){
-if(msg.sender!=owner)throw;
+if((msg.sender!=owner)&&(msg.sender!=controller))throw;
 if(u==97){
 logs.push(log(o,97,0,"",block.number));
 owner=o;}
@@ -115,6 +117,7 @@ logs.push(log(o,g,u,"exposed",block.number));
 if(!exp){exposed[g][u]=0;}else{exposed[g].push(u);}}
 return true;
 }
+
 
 //WRITE FUNCTIONS
 
@@ -134,7 +137,6 @@ function addString(address d,address addr,uint index,string info) returns(bool){
    records++;
    return true;
 }
-
 
 function addUint(address d,address addr,uint index,uint quant) returns(bool){
    if(!owned[2][index]){
@@ -167,8 +169,6 @@ function addBool(address d,address addr,uint index,bool check) returns(bool){
    records++;
    return true;
 }
-
-
 
 function addAddress(address d,address addr,uint index,address addr2) returns(bool){
    if(!owned[4][index]){
@@ -258,7 +258,7 @@ function readPermissions(uint group,address own,address control,uint layerIndex)
 return (permissions[own].length,permissions[own][layerIndex],permissionsTarget[group][own][control].length,permissionsTarget[group][own][control][layerIndex],allowed[group][own][control][layerIndex]);
 }
 
-function created(uint group,address creator,uint layerIndex)constant returns (uint,uint){
+function findMyLayers(uint group,address creator,uint layerIndex)constant returns (uint,uint){
 return (createdLayers[creator][group].length,createdLayers[creator][group][layerIndex]);
 }
 
