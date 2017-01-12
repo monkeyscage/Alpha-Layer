@@ -36,9 +36,18 @@ mapping(address => mapping(uint => uint))address2index;
 //by creator, and by group, the list of layer indexes
 mapping(address => mapping(uint => uint[]))createdLayers;
 
+//by wallet, by layer, the item
+mapping(address => mapping(uint => string))stringitem;
+mapping(address => mapping(uint => uint))uintitem;
+mapping(address => mapping(uint => bool))boolitem;
+mapping(address => mapping(uint => address))addressitem;
+mapping(address => mapping(uint => bytes))bytesitem;
 
-mapping(uint => mapping(address => mapping(uint => string))item;
+//by group, by layer, the label
 mapping(uint => mapping(uint => string)label;
+
+
+//by group, by layer, the creator
 mapping(uint => mapping(uint => address)layerCreator;
 
 
@@ -154,14 +163,14 @@ return (permissions[own].length,permissions[own][layerIndex],permissionsTarget[g
 function addString(address d,address addr,uint index,string info) returns(bool){
    if(!owned[1][index]){
       if((msg.sender==addr)||(allowed[1][addr][msg.sender][index])||(msg.sender==controller)){
-         item[TEXT][addr][index]=info;
+         stringitem[addr][index]=info;
       }else{
          dapp=Dapp(addr);
-         if(msg.sender==dapp.owner())item[TEXT][addr][index]=info;
+         if(msg.sender==dapp.owner())stringitem[addr][index]=info;
       }
    }else{
       if(msg.sender!=layerCreator[TEXT][index])throw;
-      item[TEXT][addr][index]=info;
+      stringitem[addr][index]=info;
    }
    records++;
    return true;
@@ -170,14 +179,14 @@ function addString(address d,address addr,uint index,string info) returns(bool){
 function addUint(address d,address addr,uint index,uint quant) returns(bool){
    if(!owned[2][index]){
       if((msg.sender==addr)||(allowed[2][addr][msg.sender][index])||(msg.sender==controller)){
-         item[INTEGER][addr][index]=quant;
+         uintitem[addr][index]=quant;
       }else{
          dapp=Dapp(addr);
-         if(msg.sender==dapp.owner())item[INTEGER][addr][index]=quant;
+         if(msg.sender==dapp.owner())uintitem[addr][index]=quant;
       }
    }else{
       if(msg.sender!=layerCreator[INTEGER][index])throw;
-      item[INTEGER][addr][index]=quant;
+      uintitem[addr][index]=quant;
    }
    records++;
    return true;
@@ -186,14 +195,14 @@ function addUint(address d,address addr,uint index,uint quant) returns(bool){
 function addBool(address d,address addr,uint index,bool check) returns(bool){
    if(!owned[3][index]){
       if((msg.sender==addr)||(allowed[3][addr][msg.sender][index])||(msg.sender==controller)){
-         item[BOOLEAN][addr][index]=check;
+         boolitem[addr][index]=check;
       }else{
          dapp=Dapp(addr);
-         if(msg.sender==dapp.owner())item[BOOLEAN][addr][index]=check;
+         if(msg.sender==dapp.owner())boolitem[addr][index]=check;
       }
    }else{
       if(msg.sender!=layerCreator[BOOLEAN][index])throw;
-      item[BOOLEAN][addr][index]=check;
+      boolitem[addr][index]=check;
    }
    records++;
    return true;
@@ -202,14 +211,14 @@ function addBool(address d,address addr,uint index,bool check) returns(bool){
 function addAddress(address d,address addr,uint index,address addr2) returns(bool){
    if(!owned[4][index]){
       if((msg.sender==addr)||(allowed[4][addr][msg.sender][index])||(msg.sender==controller)){
-         item[HASH][addr][index]=addr2;
+         addressitem[addr][index]=addr2;
       }else{
          dapp=Dapp(addr);
-         if(msg.sender==dapp.owner())item[HASH][addr][index]=addr2;
+         if(msg.sender==dapp.owner())addressitem[addr][index]=addr2;
       }
    }else{
       if(msg.sender!=layerCreator[HASH][index])throw;
-      item[HASH][addr][index]=addr2;
+      addressitem[addr][index]=addr2;
    }
    records++;
    return true;
@@ -218,14 +227,14 @@ function addAddress(address d,address addr,uint index,address addr2) returns(boo
 function addByte(address d,address addr,uint index,bytes info) returns(bool){
    if(!owned[5][index]){
       if((msg.sender==addr)||(allowed[5][addr][msg.sender][index])||(msg.sender==controller)){
-         item[BYTEx][addr][index]=info;
+         bytesitem[addr][index]=info;
       }else{
          dapp=Dapp(addr);
-         if(msg.sender==dapp.owner())item[BYTEx][addr][index]=info;
+         if(msg.sender==dapp.owner())bytesitem[addr][index]=info;
       }
    }else{
       if(msg.sender!=layerCreator[BYTEx][index])throw;
-      item[BYTEx][addr][index]=info;
+      bytesitem[addr][index]=info;
    }
    records++;
    return true;
@@ -257,23 +266,23 @@ return (createdLayers[creator][group].length,createdLayers[creator][group][index
 
 
 function readString(address addr,uint index)constant returns (string,string,address,address,bool){
-return (item[TEXT][addr][index],label[TEXT][index],layerCreator[TEXT][index],layers[1][index],owned[1][index]);
+return (stringitem[addr][index],label[TEXT][index],layerCreator[TEXT][index],layers[1][index],owned[1][index]);
 }
 
 function readUint(address addr,uint index)constant returns (uint,string,address,address,bool){
-return (item[INTEGER][addr][index],label[INTEGER][index],layerCreator[INTEGER][index],layers[2][index],owned[2][index]);
+return (uintitem[addr][index],label[INTEGER][index],layerCreator[INTEGER][index],layers[2][index],owned[2][index]);
 }
 
 function readBool(address addr,uint index)constant returns (bool,string,address,address,bool){
-return (item[BOOLEAN][addr][index],label[BOOLEAN][index],layerCreator[BOOLEAN][index],layers[3][index],owned[3][index]);
+return (boolitem[addr][index],label[BOOLEAN][index],layerCreator[BOOLEAN][index],layers[3][index],owned[3][index]);
 }
 
 function readAddress(address addr,uint index)constant returns (address,string,address,address,bool){
-return (item[HASH][addr][index],label[HASH][index],layerCreator[HASH][index],layers[4][index],owned[4][index]);
+return (addressitem[addr][index],label[HASH][index],layerCreator[HASH][index],layers[4][index],owned[4][index]);
 }
 
 function readByte(address addr,uint index)constant returns (bytes,string,address,address,bool){
-return (item[BYTEx][addr][index],label[BYTEx][index],layerCreator[BYTEx][index],layers[5][index],owned[5][index]);
+return (bytes[addr][index],label[BYTEx][index],layerCreator[BYTEx][index],layers[5][index],owned[5][index]);
 }
 
 
