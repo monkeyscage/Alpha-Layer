@@ -289,26 +289,13 @@ return (socialByte[addr][index],byteLabels[index],byteLayerCreator[index],layers
 
 function allow(uint group,address a,uint u,bool b)returns (bool){
 if(b){
-if(!allowed[group][msg.sender][a][u]){
-permissions[msg.sender].push(a);
-permissionsTarget[group][msg.sender][a].push(u);
-allowed[group][msg.sender][a][u]=true;}
-}else{
-for( uint i=0;i<permissionsTarget[group][msg.sender][a].length;i++){
-//find and remove layer
-   if(permissionsTarget[group][msg.sender][a][i]==u){
-
-      if(i<permissionsTarget[group][msg.sender][a].length-1){
-          permissionsTarget[group][msg.sender][a][i]=permissionsTarget[group][msg.sender][a][permissionsTarget[group][msg.sender][a].length-1];
-          permissionsTarget[group][msg.sender][a][permissionsTarget[group][msg.sender][a].length-1]=0;
-      }else{
-          permissionsTarget[group][msg.sender][a][i]=0;
-      }
-
-      permissionsTarget[group][msg.sender][a].length--;
+   if(!allowed[group][msg.sender][a][u]){
+      permissions[msg.sender].push(a);
+      permissionsTarget[group][msg.sender][a].push(u);
+      allowed[group][msg.sender][a][u]=true;
    }
-}
-allowed[group][msg.sender][a][u]=false;
+}else{
+   allowed[group][msg.sender][a][u]=false;
 }
 return true;
 }
