@@ -18,15 +18,24 @@ uint public records;
 //used to point to external dapps/contracts (in order to find dapp owner, and to check if you have the permission to write on that location in behalf of the dapp)
 Dapp dapp;
 
+
+//GROUPS: layer pointers
 uint TEXT=1;
 uint INTEGER=2;
 uint BOOLEAN=3;
 uint HASH=4;
 uint BYTEx=5;
 
+
+//by group, a list of layers and their address
 mapping(uint => mapping(uint => address))layers;
+
+//given an address you can find, by group, the index of the layer (if true result > 0)
 mapping(address => mapping(uint => uint))address2index;
+
+//by creator, and by group, the list of layer indexes
 mapping(address => mapping(uint => uint[]))createdLayers;
+
 
 mapping(uint => mapping(address => mapping(uint => string))item;
 mapping(uint => mapping(uint => string)label;
@@ -208,10 +217,20 @@ function addByte(address d,address addr,uint index,bytes info) returns(bool){
 
 //some layers are exposed and visible and can be listed
 
-function exposedLayers(uint g,uint u,address a)constant returns(uint,uint,address,uint){
-uint uu;uint ll;
-uu=exposed[g][u];ll=exposed[g].length;
-return(uu,ll,layers[g][u],address2index[a][g]);
+function exposedLayers(uint groupORindex,uint layerIndex,address a)constant returns(uint,uint){
+return(exposed[groupORindex][layerIndex],exposed[groupORindex].length);
+}
+
+//get layer
+
+function layerInfo(uint groupORindex,uint layerIndex,address addr)constant returns(address,address,string,uint,bool){
+return(layers[groupORindex][layerIndex],layerCreator[groupORindex][layerIndex],label[groupORindex][layerIndex],address2index[addr][groupORindex],owned[groupORindex][layerIndex]);
+}
+
+//list layers created by someone
+
+function findMyLayers(uint group,address creator,uint index)constant returns (uint,uint,address){
+return (createdLayers[creator][group].length,createdLayers[creator][group][index],layers[group][createdLayers[creator][group][index]]);
 }
 
 //read Layers
@@ -258,9 +277,7 @@ function readPermissions(uint group,address own,address control,uint layerIndex)
 return (permissions[own].length,permissions[own][layerIndex],permissionsTarget[group][own][control].length,permissionsTarget[group][own][control][layerIndex],allowed[group][own][control][layerIndex]);
 }
 
-function findMyLayers(uint group,address creator,uint layerIndex)constant returns (uint,uint){
-return (createdLayers[creator][group].length,createdLayers[creator][group][layerIndex]);
-}
+
 
 
 //BLOCKLOG code
