@@ -50,7 +50,6 @@ mapping(uint => uint[])exposed;
 mapping(uint => mapping(uint => bool))owned;
 
 
-
 function AlphaLayer(address control){
 owner=msg.sender;
 records=0;
@@ -65,8 +64,6 @@ if((msg.sender!=owner)&&(msg.sender!=controller))throw;
 if(labelindex==0)throw;
 
 if(!taken[labeltype][labelindex]){
-
-
    label[labeltype][labelindex]=lab;
    layerCreator[labeltype][labelindex]=creator;
    logs.push(log(creator,labeltype,labelindex,label,block.number));
@@ -221,23 +218,23 @@ return(uu,ll,layers[g][u],address2index[a][g]);
 
 
 function readString(address addr,uint index)constant returns (string,string,address,address,bool){
-return (socialString[addr][index],stringLabels[index],stringLayerCreator[index],layers[1][index],owned[1][index]);
+return (item[TEXT][addr][index],label[TEXT][index],layerCreator[TEXT][index],layers[1][index],owned[1][index]);
 }
 
 function readUint(address addr,uint index)constant returns (uint,string,address,address,bool){
-return (socialUint[addr][index],uintLabels[index],uintLayerCreator[index],layers[2][index],owned[2][index]);
+return (item[INTEGER][addr][index],label[INTEGER][index],layerCreator[INTEGER][index],layers[2][index],owned[2][index]);
 }
 
 function readBool(address addr,uint index)constant returns (bool,string,address,address,bool){
-return (socialBool[addr][index],boolLabels[index],boolLayerCreator[index],layers[3][index],owned[3][index]);
+return (item[BOOLEAN][addr][index],label[BOOLEAN][index],layerCreator[BOOLEAN][index],layers[3][index],owned[3][index]);
 }
 
 function readAddress(address addr,uint index)constant returns (address,string,address,address,bool){
-return (socialAddress[addr][index],addressLabels[index],addressLayerCreator[index],layers[4][index],owned[4][index]);
+return (item[HASH][addr][index],label[HASH][index],layerCreator[HASH][index],layers[4][index],owned[4][index]);
 }
 
 function readByte(address addr,uint index)constant returns (bytes,string,address,address,bool){
-return (socialByte[addr][index],byteLabels[index],byteLayerCreator[index],layers[5][index],owned[5][index]);
+return (item[BYTEx][addr][index],label[BYTEx][index],layerCreator[BYTEx][index],layers[5][index],owned[5][index]);
 }
 
 
