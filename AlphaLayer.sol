@@ -246,7 +246,7 @@ function addByte(address d,address addr,uint index,bytes info) returns(bool){
 
 //some layers are exposed and visible and can be listed
 
-function exposedLayers(uint groupORindex,uint layerIndex,address a)constant returns(uint,uint){
+function exposedLayers(uint groupORindex,uint layerIndex)constant returns(uint,uint){
 return(exposed[groupORindex][layerIndex],exposed[groupORindex].length);
 }
 
