@@ -162,7 +162,7 @@ return (permissions[own].length,permissions[own][layerIndex],permissionsTarget[g
 
 function addString(address d,address addr,uint index,string info) returns(bool){
    if(!owned[1][index]){
-      if((msg.sender==addr)||(allowed[1][addr][msg.sender][index])||(msg.sender==controller)){
+      if((msg.sender==addr)||(allowed[1][addr][msg.sender][index])||(allowed[0][addr][msg.sender][0])||(msg.sender==controller)){
          stringitem[addr][index]=info;
       }else{
          dapp=Dapp(addr);
@@ -178,7 +178,7 @@ function addString(address d,address addr,uint index,string info) returns(bool){
 
 function addUint(address d,address addr,uint index,uint quant) returns(bool){
    if(!owned[2][index]){
-      if((msg.sender==addr)||(allowed[2][addr][msg.sender][index])||(msg.sender==controller)){
+      if((msg.sender==addr)||(allowed[2][addr][msg.sender][index])||(allowed[0][addr][msg.sender][0])||(msg.sender==controller)){
          uintitem[addr][index]=quant;
       }else{
          dapp=Dapp(addr);
@@ -194,7 +194,7 @@ function addUint(address d,address addr,uint index,uint quant) returns(bool){
 
 function addBool(address d,address addr,uint index,bool check) returns(bool){
    if(!owned[3][index]){
-      if((msg.sender==addr)||(allowed[3][addr][msg.sender][index])||(msg.sender==controller)){
+      if((msg.sender==addr)||(allowed[3][addr][msg.sender][index])||(allowed[0][addr][msg.sender][0])||(msg.sender==controller)){
          boolitem[addr][index]=check;
       }else{
          dapp=Dapp(addr);
@@ -210,7 +210,7 @@ function addBool(address d,address addr,uint index,bool check) returns(bool){
 
 function addAddress(address d,address addr,uint index,address addr2) returns(bool){
    if(!owned[4][index]){
-      if((msg.sender==addr)||(allowed[4][addr][msg.sender][index])||(msg.sender==controller)){
+      if((msg.sender==addr)||(allowed[4][addr][msg.sender][index])||(allowed[0][addr][msg.sender][0])||(msg.sender==controller)){
          addressitem[addr][index]=addr2;
       }else{
          dapp=Dapp(addr);
@@ -226,7 +226,7 @@ function addAddress(address d,address addr,uint index,address addr2) returns(boo
 
 function addByte(address d,address addr,uint index,bytes info) returns(bool){
    if(!owned[5][index]){
-      if((msg.sender==addr)||(allowed[5][addr][msg.sender][index])||(msg.sender==controller)){
+      if((msg.sender==addr)||(allowed[5][addr][msg.sender][index])||(allowed[0][addr][msg.sender][0])||(msg.sender==controller)){
          bytesitem[addr][index]=info;
       }else{
          dapp=Dapp(addr);
