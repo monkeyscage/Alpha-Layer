@@ -139,15 +139,29 @@ return true;
 
 //PERMISSIONS
 
-function allow(uint group,address dapp,uint layer,bool b)returns (bool){
+function allow(uint group,address dapp,address target,uint layer,bool b)returns (bool){
+
+
 if(b){
+ if(msg.sender==target){
    if(!allowed[group][msg.sender][dapp][layer]){
       permissions[msg.sender].push(dapp);
       permissionsTarget[group][msg.sender][dapp].push(layer);
       allowed[group][msg.sender][dapp][layer]=true;
    }
+ }else{
+   dapp=Dapp(target);
+   if(msg.sender==dapp.owner()){
+      permissions[target].push(dapp);
+      permissionsTarget[group][target][dapp].push(layer);
+      allowed[group][target][dapp][layer]=true;
+   }
+ }
 }else{
-   allowed[group][msg.sender][dapp][layer]=false;
+ if(msg.sender==target){allowed[group][msg.sender][dapp][layer]=false;}else{
+   dapp=Dapp(target);
+   if(msg.sender==dapp.owner())allowed[group][target][dapp][layer]=false;
+ }
 }
 return true;
 }
