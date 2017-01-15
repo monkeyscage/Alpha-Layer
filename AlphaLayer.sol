@@ -144,30 +144,30 @@ function allow(uint group,,address target,address contr,uint layer,bool b)return
 
 if(b){
  if(msg.sender==target){
-   if(!allowed[group][msg.sender][contr][layer]){
-      permissions[msg.sender].push(contr);
-      permissionsTarget[group][msg.sender][contr].push(layer);
-      allowed[group][msg.sender][contr][layer]=true;
-   }
+   if(!allowed[group][target][contr][layer]){
+      permissions[target].push(contr);
+      permissionsTarget[group][target][contr].push(layer);
+      allowed[group][target][contr][layer]=true;
+   }else{throw;}
  }else{
    dapp=Dapp(target);
    if(msg.sender==dapp.owner()){
       permissions[target].push(dap);
       permissionsTarget[group][target][contr].push(layer);
       allowed[group][target][contr][layer]=true;
-   }
+   }else{throw;}
  }
 }else{
- if(msg.sender==target){allowed[group][msg.sender][contr][layer]=false;}else{
+ if(msg.sender==target){allowed[group][target][contr][layer]=false;}else{
    dapp=Dapp(target);
-   if(msg.sender==dapp.owner())allowed[group][target][contr][layer]=false;
+   if(msg.sender==dapp.owner()){allowed[group][target][contr][layer]=false;}else{throw;}
  }
 }
 return true;
 }
 
-function readPermissions(uint group,address own,address control,uint layerIndex)constant returns (uint,address,uint,uint,bool){
-return (permissions[own].length,permissions[own][layerIndex],permissionsTarget[group][own][control].length,permissionsTarget[group][own][control][layerIndex],allowed[group][own][control][layerIndex]);
+function readPermissions(uint group,address target,address control,uint layerIndex)constant returns (uint,address,uint,uint,bool){
+return (permissions[target].length,permissions[target][layerIndex],permissionsTarget[group][target][control].length,permissionsTarget[group][target][control][layerIndex],allowed[group][target][control][layerIndex]);
 }
 
 
