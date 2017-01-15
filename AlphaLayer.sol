@@ -139,28 +139,28 @@ return true;
 
 //PERMISSIONS
 
-function allow(uint group,address dap,address target,uint layer,bool b)returns (bool){
+function allow(uint group,,address target,address contr,uint layer,bool b)returns (bool){
 
 
 if(b){
  if(msg.sender==target){
-   if(!allowed[group][msg.sender][dap][layer]){
-      permissions[msg.sender].push(dap);
-      permissionsTarget[group][msg.sender][dap].push(layer);
-      allowed[group][msg.sender][dap][layer]=true;
+   if(!allowed[group][msg.sender][contr][layer]){
+      permissions[msg.sender].push(contr);
+      permissionsTarget[group][msg.sender][contr].push(layer);
+      allowed[group][msg.sender][contr][layer]=true;
    }
  }else{
    dapp=Dapp(target);
    if(msg.sender==dapp.owner()){
       permissions[target].push(dap);
-      permissionsTarget[group][target][dap].push(layer);
-      allowed[group][target][dap][layer]=true;
+      permissionsTarget[group][target][contr].push(layer);
+      allowed[group][target][contr][layer]=true;
    }
  }
 }else{
- if(msg.sender==target){allowed[group][msg.sender][dap][layer]=false;}else{
+ if(msg.sender==target){allowed[group][msg.sender][contr][layer]=false;}else{
    dapp=Dapp(target);
-   if(msg.sender==dapp.owner())allowed[group][target][dap][layer]=false;
+   if(msg.sender==dapp.owner())allowed[group][target][contr][layer]=false;
  }
 }
 return true;
