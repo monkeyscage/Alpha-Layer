@@ -166,9 +166,14 @@ if(b){
 return true;
 }
 
-function readPermissions(uint group,address target,address control,uint layerIndex)constant returns (uint,address,uint,uint,bool){
-return (permissions[target].length,permissions[target][layerIndex],permissionsTarget[group][target][control].length,permissionsTarget[group][target][control][layerIndex],allowed[group][target][control][layerIndex]);
+function permissionsList(uint group,address target,address control,uint index)constant returns (uint,address,bool){
+return (permissions[target].length,permissions[target][index],allowed[group][target][control][layerIndex]);
 }
+
+function readPermissions(uint group,address target,address control,uint targetIndex)constant returns (uint,uint){
+return (permissionsTarget[group][target][control].length,permissionsTarget[group][target][control][targetIndex]);
+}
+
 
 
 //WRITE FUNCTIONS
