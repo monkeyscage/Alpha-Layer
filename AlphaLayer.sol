@@ -139,7 +139,7 @@ return true;
 
 //PERMISSIONS
 
-function allow(uint group,,address target,address contr,uint layer,bool b)returns (bool){
+function allow(uint group,address target,address contr,uint layer,bool b)returns (bool){
 
 
 if(b){
@@ -152,7 +152,7 @@ if(b){
  }else{
    dapp=Dapp(target);
    if(msg.sender==dapp.owner()){
-      permissions[target].push(dap);
+      permissions[target].push(contr);
       permissionsTarget[group][target][contr].push(layer);
       allowed[group][target][contr][layer]=true;
    }else{throw;}
