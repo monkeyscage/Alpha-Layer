@@ -167,7 +167,7 @@ return true;
 }
 
 function permissionsList(uint group,address target,address control,uint index)constant returns (uint,address,bool){
-return (permissions[target].length,permissions[target][index],allowed[group][target][control][layerIndex]);
+return (permissions[target].length,permissions[target][index],allowed[group][target][control][index]);
 }
 
 function readPermissions(uint group,address target,address control,uint targetIndex)constant returns (uint,uint){
