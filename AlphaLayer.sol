@@ -311,7 +311,7 @@ return (bytesitem[addr][index],label[BYTEx][index],layerCreator[BYTEx][index],la
 //BLOCKLOG code
 
 log[] logs;
-string public logABI="a-User|s-Layer Type|u-Layer|s-Action";
+string public logInterface="a-User|s-Layer Type|u-Layer|s-Action|u-Block";
 
     struct log{
     address creator;
@@ -323,8 +323,7 @@ string public logABI="a-User|s-Layer Type|u-Layer|s-Action";
 
 function readLog(uint i)constant returns(uint,address,uint,uint,string,uint){
 log l=logs[i];
-uint u=logs.length;
-return(u,l.creator,l.layertype,l.layer,l.action,l.blocknumber);
+return(logs.length,l.creator,l.layertype,l.layer,l.action,l.blocknumber);
 }
 
 
