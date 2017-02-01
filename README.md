@@ -13,7 +13,7 @@ Find an introductory post article here:
 https://www.reddit.com/r/ethereum/comments/5kq4uw/the_war_of_dapps_has_begun/
 
 Basic temporary ROPSTEN interface:
-http://etherscape.io/alphalayer.html
+http://alphalayer.xyz
 
 Contract:
 0x8005f6dAc2482cB5bd5860c3D99fD0c7Ee883c60
