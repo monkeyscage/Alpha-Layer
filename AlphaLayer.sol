@@ -74,8 +74,6 @@ owner=msg.sender;
 
 // set owner, controller and unexpose layer
 
-// set owner, controller and unexpose layer
-
 function manager(address o,uint g,uint u,bool exp)returns(bool){
 if((msg.sender!=owner)&&(msg.sender!=controller))throw;
 logs.push(log(o,g,u,"manag",block.number));
@@ -87,33 +85,13 @@ return true;
 
 //just a bunch of basic layers to star from
 
-function init(){
-//the very basic layers needed so far
-createLayer(100,1,"name",this,true,false);
-createLayer(100,2,"address",this,true,false);
-createLayer(100,3,"email",this,true,false);
-createLayer(100,4,"description",this,true,false);
-createLayer(100,5,"logo512*512",this,true,false);
-createLayer(100,6,"logo256*256",this,true,false);
-createLayer(100,7,"logo128*128",this,true,false);
-createLayer(100,8,"logo64*64",this,true,false);
-createLayer(100,9,"logo32*32",this,true,false);
-createLayer(100,10,"logo16*16",this,true,false);
-createLayer(100,11,"owner",this,true,false);
-createLayer(100,12,"Github",this,true,false);
-createLayer(100,13,"Twitter Account",this,true,false);
-createLayer(100,14,"Twitter Widget",this,true,false);
-createLayer(100,15,"Twitter Widget@",this,true,false);
-createLayer(100,16,"Facebook",this,true,false);
-createLayer(100,17,"Google",this,true,false);
-}
 
 
 //creation of new layers
 
 function createLayer(uint group,uint layer,string lab,address creator,bool exp,bool own)returns(bool){
-if((msg.sender!=owner)&&(msg.sender!=controller))throw;
-if(layer==0)throw;
+if(((msg.sender!=owner)&&(msg.sender!=controller)||(layer==0)))throw;
+
 
 if(!taken[group][layer]){
    label[group][layer]=lab;
@@ -134,7 +112,7 @@ return true;
 //PERMISSIONS
 
 function allow(uint group,address target,address contr,uint layer,bool b)returns (bool){
-
+if(msg.sender!=target)if(msg.sender!=dapp.owner())throw;
 
 if(b){
  if(msg.sender==target){
@@ -144,17 +122,15 @@ if(b){
       allowed[group][target][contr][layer]=true;
    }else{throw;}
  }else{
-   dapp=Dapp(target);
-   if(msg.sender==dapp.owner()){
+       dapp=Dapp(target);
       permissions[target].push(contr);
       permissionsTarget[group][target][contr].push(layer);
       allowed[group][target][contr][layer]=true;
-   }else{throw;}
  }
 }else{
  if(msg.sender==target){allowed[group][target][contr][layer]=false;}else{
    dapp=Dapp(target);
-   if(msg.sender==dapp.owner()){allowed[group][target][contr][layer]=false;}else{throw;}
+   allowed[group][target][contr][layer]=false;
  }
 }
 return true;
