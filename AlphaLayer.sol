@@ -68,26 +68,20 @@ mapping(uint => uint[])exposed;
 mapping(uint => mapping(uint => bool))owned;
 
 
-function AlphaLayer(address control){
+function AlphaLayer(){
 owner=msg.sender;
-records=0;
-controller=control;
-logs.push(log(msg.sender,0,0,"Created AlphaLayer 1.0",block.number));
 }
+
+// set owner, controller and unexpose layer
 
 // set owner, controller and unexpose layer
 
 function manager(address o,uint g,uint u,bool exp)returns(bool){
 if((msg.sender!=owner)&&(msg.sender!=controller))throw;
-if(u==97){
-logs.push(log(o,97,0,"",block.number));
-owner=o;}
-if(u==98){
-logs.push(log(o,98,0,"",block.number));
-controller=o;}
-if(u<=6){
-logs.push(log(o,g,u,"exposed",block.number));
-if(!exp){exposed[g][u]=0;}else{exposed[g].push(u);}}
+logs.push(log(o,g,u,"manag",block.number));
+if(u==97)owner=o;
+if(u==98)controller=o;
+if(u<=6)if(!exp){exposed[g][u]=0;}else{exposed[g].push(u);}
 return true;
 }
 
