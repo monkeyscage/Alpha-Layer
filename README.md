@@ -6,7 +6,37 @@ For an Augmented Ethereum
 Alpha Layer is the first contract of a serie of OPEN CONTRACTS on the Ethereum Platform.
 The meaning of Alpha Layer is to have an open central repository for all possible public metadata and informations regarding a wallet, a dapp, or a token.
 
+AlphaLayer is an Etheruem Augmenter contract (it augments Ethereum!)
+
+AlphLayer introduces the concept of ETHEREUM ENTITY.
+
+A perfect Ethereum Entity is a wallet/contract whose owner is known.
+The owner of a wallet can be easy recognized by the fact he has the password of the wallet.
+A contract, instead, must contain the variable address public owner; in order to recognize its owner.
+
 If you control a wallet (or you are the "address public owner;" of a smart contract) you can control the associated informations on the Alpha Layer.
+
+Example: 
+
+A wallet is just a wallet, you can only store ETH and transfer it.
+Thanks to AlphaLayer dapps/users now can add augmented variables to that wallet.
+A name? An Image? A standard link to a private chat channel? A teleport to an Augmented 3D world?
+You can really augment a wallet/contract with anything.
+The resulting Augmented OPEN DATA BASE is the product of the efforts of multiple dapps, coworking in the creation of a central Augmenting Layers System.
+
+AlphaLayer is composed by many layers.
+
+Example:
+
+Layer 1 - Name
+Layer 2 - Associated web address
+Layer 4 - Description
+Layer 6 - Logo 256*256
+etc.
+
+All informations are public.
+This is a privacy oriented concept (in the meaning you don't have to declare yourself).
+All informations deposited on AlphaLayer are public and meant to be shared by any dapp.
 
 It is possible to add custom layers and extend Alpha Layer.
 Please refer to the wiki (under construction) https://github.com/monkeyscage/Alpha-Layer/wiki.
