@@ -38,8 +38,7 @@ Layer 6 - Logo 256*256.
 
 etc.
 
-All informations are public.
-This is a privacy oriented concept (in the meaning you don't have to declare yourself).
+This is a privacy oriented system (in the meaning you don't have to declare yourself).
 All informations deposited on AlphaLayer are public and meant to be shared by any dapp.
 
 It is possible to add custom layers and extend Alpha Layer.
