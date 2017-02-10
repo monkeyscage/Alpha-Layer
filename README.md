@@ -6,7 +6,7 @@ For an Augmented Ethereum
 Alpha Layer is the first contract of a serie of OPEN CONTRACTS on the Ethereum Platform.
 The meaning of Alpha Layer is to have an open central repository for all possible public metadata and informations regarding a wallet, a dapp, or a token.
 
-AlphaLayer is an Etheruem Augmenter contract (it augments Ethereum!)
+AlphaLayer is an Ethereum Augmentor contract (it augments Ethereum!)
 
 AlphLayer introduces the concept of ETHEREUM ENTITY.
 
