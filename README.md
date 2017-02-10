@@ -29,9 +29,13 @@ AlphaLayer is composed by many layers.
 Example:
 
 Layer 1 - Name.
+
 Layer 2 - Associated web address.
+
 Layer 4 - Description.
+
 Layer 6 - Logo 256*256.
+
 etc.
 
 All informations are public.
